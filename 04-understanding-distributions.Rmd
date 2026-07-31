@@ -1,0 +1,1044 @@
+# Understanding Distributions {#c04-distributions}
+
+```{r}
+#| label: dist-styler
+#| include: false
+knitr::opts_chunk$set(tidy = "styler")
+options(pillar.max_dec_width = 19)
+```
+
+::: prereqbox-header
+`r if (knitr:::is_html_output()) '### Prerequisites {- #prereq6}'`
+:::
+
+::: {.prereqbox data-latex="{Prerequisites}"}
+This chapter uses {tidyverse} for data manipulation, {srvyr} for survey estimation, {broom} for tidying model-style output, and {scales} for formatting large numbers and percentages in the text.
+
+```{r}
+#| label: dist-packages
+#| message: false
+#| warning: false
+library(tidyverse)
+library(srvyr)
+library(broom)
+library(scales)
+```
+
+Every estimate in this chapter comes from the ICAN-ICAR 2025 design object built in Chapter \@ref(c05-setting-up). The chunk below reads the data, adds a handful of labelled variables that make the output easier to read, and rebuilds the design object. Documentation for the survey is in the [DataFirst metadata record](https://www.datafirst.uct.ac.za/dataportal/index.php/catalog/1132).
+
+```{r}
+#| label: dist-design
+#| message: false
+#| warning: false
+options(
+  survey.lonely.psu = "adjust",
+  survey.adjust.domain.lonely = TRUE
+)
+
+icanicar_2025 <- read_csv("data/ican-icar-2025-v1.csv")
+
+icanicar_des <- icanicar_2025 |>
+  mutate(
+    sex = factor(ch03, levels = c(1, 2), labels = c("Female", "Male")),
+    residence = factor(str_trim(Location), levels = c("Rural", "Urban")),
+    schooling = factor(
+      EnrolmentStatus,
+      levels = c("Currently Enrolled", "Out of School", "Never Enrolled")
+    ),
+    mpl_math = factor(
+      MPLMath,
+      levels = c(0, 1),
+      labels = c("Below MPL", "At or above MPL")
+    ),
+    mpl_reading = factor(
+      MPLReading,
+      levels = c(0, 1),
+      labels = c("Below MPL", "At or above MPL")
+    ),
+    psu = interaction(CountryName, VillageID, drop = TRUE),
+    stratum = interaction(CountryName, TierOneUnit, drop = TRUE)
+  ) |>
+  as_survey_design(
+    ids = c(psu, HHID),
+    strata = stratum,
+    weights = HHWeightProvided,
+    nest = TRUE
+  )
+```
+:::
+
+```{r}
+#| label: dist-helpers
+#| include: false
+n_fmt <- function(x) comma(x, accuracy = 1)
+m_fmt <- function(x) number(x / 1e6, accuracy = 0.1, suffix = " million")
+p_fmt <- function(x) percent(x, accuracy = 0.1)
+d_fmt <- function(x, digits = 3) number(x, accuracy = 10^(-digits))
+```
+
+## From a sample of children to a population of learners
+
+The ICAN-ICAR 2025 file holds one row per assessed child: `r n_fmt(nrow(icanicar_2025))` children in `r n_distinct(icanicar_2025$CountryName)` countries. Those children were not picked one at a time from a national list. They were reached through sampled enumeration areas and sampled households, so some children stand in for far more of their peers than others. This is why a plain `count()` and a survey-weighted count answer different questions. The first describes who was interviewed; the second describes the population of children those interviews represent.
+
+Descriptive analysis is where that distinction becomes visible for the first time, and it is where most survey analysis begins and ends. Before fitting any model we usually want to know how many children are out of school, what share of them can read a short story or handle two-digit subtraction, how learning outcomes are spread within a country, and whether the gap between rural and urban children is large enough to take seriously. Each of those questions is a statement about a distribution, and each needs a point estimate together with an honest measure of uncertainty.
+
+### Matching statistics to the type of variable
+
+Which summary is appropriate depends on the variable. Any variable in the data is made up of two or more categories or attributes. A child's sex has the categories female and male; the language of assessment has categories such as Swahili, Bangla, and Wolof.
+
+The level of measurement of a variable describes how its categories relate to one another. Three questions settle the level of measurement: are the categories distinct; can they be placed in a meaningful rank order; and are the intervals between them numerically meaningful? Working through those questions gives four types of variable, all four of which appear in ICAN-ICAR 2025:
+
+1.  **Categorical (nominal)** variables have categories that cannot be ranked: `CountryName`, `AssessmentLanguage`, `Location`, and the derived `sex` variable. Summarise these with counts and proportions.
+2.  **Ordinal** variables can be ranked but the gaps between categories have no fixed size. The functional difficulty items such as `ch04a`, which runs from no difficulty to cannot do at all, are ordinal. Counts, proportions, and medians are appropriate; means are usually not.
+3.  **Discrete** variables are counted in whole units: household size (`hh06a`), the child's age in completed years (`ch02`), and the number of correct items on an assessment.
+4.  **Continuous** variables can take any value on an interval: the mathematics and reading ability scores (`MathIRTScore`, `ReadingIRTScore`) and the time each assessment took (`IcanAssessTime`, `IcarAssessTime`). Means, quantiles, and measures of spread all apply.
+
+Proficiency indicators such as `MPLMath`, `MPLReading`, and `MPLBoth` sit in a convenient middle ground. They are categorical, coded 0 and 1, so the mean of the indicator is the proportion of children reaching the minimum proficiency level. That equivalence is used repeatedly below.
+
+### What this chapter covers
+
+All the estimators used here come from {srvyr}, which wraps the {survey} package in {dplyr} syntax so that survey estimation looks like ordinary data manipulation. They fall into four families:
+
+-   **Distribution.** How often something occurs, and how much of it there is in total: `survey_count()`, `survey_tally()`, and `survey_total()`.
+-   **Central tendency.** Where the middle of a distribution sits: `survey_mean()`, `survey_prop()`, `survey_quantile()`, and `survey_median()`.
+-   **Relationship.** How two variables move together: `survey_ratio()` and `survey_corr()`.
+-   **Dispersion.** How widely values are spread: `survey_var()` and `survey_sd()`.
+
+The workflow from Chapter \@ref(c05-setting-up) applies to all of them:
+
+1.  Build a `tbl_svy` object with `as_survey_design()`.
+2.  Restrict to a subpopulation with `filter()`, if needed.
+3.  Define domains of analysis with `group_by()`, if needed.
+4.  Call the estimator inside `summarize()`.
+
+Steps 2 and 3 must come *after* step 1. Filtering or grouping the raw data frame before the design is built hides part of the sample from the variance calculation, and the standard errors that come out the other side will be wrong. Working from `icanicar_des` rather than `icanicar_2025` is the safeguard.
+
+### Missing values are not spread evenly
+
+One more thing to check before estimating anything. The assessment outcomes are not observed for every child:
+
+```{r}
+#| label: dist-missing
+icanicar_2025 |>
+  summarize(across(
+    c(MathIRTScore, ReadingIRTScore, MPLMath, MPLBoth, IcanAssessTime),
+    ~ sum(is.na(.x))
+  ))
+```
+
+In total, `r n_fmt(sum(is.na(icanicar_2025$MPLMath)))` children have no proficiency classification, and more than twice that many have no recorded ICAN timing. Survey functions in {srvyr} refuse to guess what to do about this: `na.rm` defaults to `FALSE`, so an unguarded call returns `NA`. Setting `na.rm = TRUE` drops the missing cases and quietly changes the denominator to "children with a valid assessment". That is usually what we want, but it is a substantive choice rather than a technical one, so this chapter states it every time. Chapter \@ref(c05-setting-up) points to the survey documentation on why assessments are missing.
+
+## Counting children and cross-tabulating
+
+`survey_count()` estimates how many members of the population fall into a category, or into each combination of several categories. The cross-tabulations it produces are the natural first summary of any categorical variable. `survey_tally()` does the same job for data that have already been grouped.
+
+### Calling the functions
+
+`survey_count()` mirrors `dplyr::count()`, with extra arguments controlling the uncertainty estimate:
+
+```r
+survey_count(
+  x,
+  ...,
+  wt = NULL,
+  sort = FALSE,
+  name = "n",
+  .drop = dplyr::group_by_drop_default(x),
+  vartype = c("se", "ci", "var", "cv")
+)
+```
+
+Reading the arguments in turn: `x` is the design object; `...` takes the variables to tabulate, exactly as `count()` would; `wt` supplies a second weight to apply on top of the survey weights, which we rarely need because the design object already carries them; `sort` orders the output by size; `name` sets the column name for the estimate, `n` by default; `.drop` controls whether empty combinations disappear from the output; and `vartype` chooses which uncertainty measures to return. The full argument documentation is in `?survey_count`.
+
+`survey_tally()` takes the same arguments except `...` and `.drop`, because the grouping has already been done by `group_by()`:
+
+```r
+survey_tally(
+  x,
+  wt,
+  sort = FALSE,
+  name = "n",
+  vartype = c("se", "ci", "var", "cv")
+)
+```
+
+The `vartype` argument appears in nearly every function in this chapter, so it is worth settling now. It accepts any combination of four values, and each one adds columns named after the estimate:
+
+-   `"se"` (the default) returns the standard error, suffixed `_se`. It measures how much the estimate would move around if the survey were repeated, and it is the usual currency for judging precision.
+-   `"ci"` returns the bounds of a confidence interval, suffixed `_low` and `_upp`. The default level is 95%, changed through the `level` argument, so `level = 0.9` gives a 90% interval.
+-   `"var"` returns the variance of the estimate, suffixed `_var`. It is the square of the standard error.
+-   `"cv"` returns the coefficient of variation, suffixed `_cv`, which is the standard error divided by the estimate. Because it is relative, it is the easiest way to spot estimates that are too imprecise to publish.
+
+Unless a function documents otherwise, confidence intervals are symmetric and based on the t-distribution:
+
+$$\text{estimate} \pm t^*_{df} \times SE$$
+
+The degrees of freedom come from the design rather than the number of children. For a stratified cluster design they are the number of first-stage clusters minus the number of strata, which {survey} reports directly:
+
+```{r}
+#| label: dist-degf
+survey::degf(icanicar_des)
+```
+
+ICAN-ICAR 2025 has 2,927 sampled enumeration areas spread over 273 country-by-region strata, leaving `r n_fmt(survey::degf(icanicar_des))` degrees of freedom. That is comfortably large, so t-based intervals here are almost identical to normal-based ones. In smaller designs, or in analyses restricted to one country, the difference matters and the `df` argument lets us override the default.
+
+### How many children does the sample represent?
+
+Called with no variables, `survey_count()` estimates the size of the whole population of interest:
+
+```{r}
+#| label: dist-count-overall
+children_total <- icanicar_des |>
+  survey_count(name = "children")
+
+children_total
+```
+
+```{r}
+#| label: dist-count-overall-values
+#| include: false
+.children <- pull(children_total, children)
+.children_se <- pull(children_total, children_se)
+```
+
+The `r n_fmt(nrow(icanicar_2025))` children in the file represent an estimated `r m_fmt(.children)` children across the eleven participating countries, with a standard error of `r m_fmt(.children_se)`. Two things are worth noticing. First, the estimate is enormous compared with the sample, which is exactly what weights are for. Second, this is a count of *children in the age range the survey targets*, because the household weight attaches to every child assessed in that household. It is not a count of households, and it is not a count of all children of all ages.
+
+Estimates like this deserve a plausibility check against an external source before they go anywhere near a report. If a weighted count is wildly out of line with the national population of school-age children, the likely explanation is a weighting or subsetting mistake rather than a surprising finding.
+
+### Cross-tabulating by country and location
+
+Passing variables to `survey_count()` breaks the estimate down by every combination of them. Here the estimated number of children is split by country and by rural or urban residence, with confidence intervals instead of standard errors and the count column renamed:
+
+```{r}
+#| label: dist-count-crosstab
+#| warning: false
+children_by_area <- icanicar_des |>
+  survey_count(CountryName, residence, name = "children", vartype = "ci")
+
+children_by_area
+```
+
+```{r}
+#| label: dist-count-crosstab-values
+#| include: false
+.tz <- children_by_area |>
+  filter(CountryName == "Tanzania")
+```
+
+The table has one row per country and residence combination. In Tanzania, for example, an estimated `r m_fmt(.tz |> filter(residence == "Rural") |> pull(children))` children live in rural areas and `r m_fmt(.tz |> filter(residence == "Urban") |> pull(children))` in urban areas. Running this code interactively also produces a stack of warnings about strata containing a single primary sampling unit; the next section explains what they mean and why the chapter suppresses them.
+
+`survey_tally()` reaches the same answer from a grouped design:
+
+```{r}
+#| label: dist-tally
+#| warning: false
+icanicar_des |>
+  group_by(residence) |>
+  survey_tally(name = "children")
+```
+
+The two functions are not interchangeable, though. Handing a variable to `survey_tally()` fails, because it tries to sum that variable rather than group by it:
+
+```{r}
+#| label: dist-tally-error
+#| error: true
+icanicar_des |>
+  survey_tally(CountryName)
+```
+
+The error message is a useful reminder of the division of labour: variables named inside `survey_count()` are grouping variables, whereas anything passed to a `survey_*()` estimator is treated as a quantity to be summed or averaged.
+
+## When a stratum contains only one village
+
+The warnings above are specific to this dataset and worth understanding rather than ignoring. Variance estimation for a stratified design works by comparing clusters *within* each stratum. A stratum that contains a single sampled enumeration area offers nothing to compare, so its contribution to the variance is undefined. A number of strata in ICAN-ICAR 2025 are in exactly that position:
+
+```{r}
+#| label: dist-lonely
+lonely_strata <- icanicar_2025 |>
+  distinct(CountryName, TierOneUnit, VillageID) |>
+  count(CountryName, TierOneUnit, name = "villages") |>
+  filter(villages == 1)
+
+lonely_strata
+```
+
+There are `r nrow(lonely_strata)` such strata, spread across `r n_distinct(lonely_strata$CountryName)` countries. Left alone, {survey} raises an error when an estimate touches one of them. The setup chunk therefore sets
+
+```r
+options(survey.lonely.psu = "adjust")
+```
+
+which centres those strata at the overall population mean instead of dropping them, giving a conservative (slightly larger) variance rather than no variance at all. The companion option `survey.adjust.domain.lonely = TRUE` applies the same treatment when a `group_by()` or `filter()` leaves a stratum with one cluster in a particular domain, which happens often once estimates are broken down by country and residence together.
+
+Two habits follow from this. Set both options once, near the top of the analysis, so that every estimate is computed the same way. And treat a long list of lonely-stratum warnings as a signal to check whether the domain being estimated is too fine for the design to support, because a conservative variance is still a poor substitute for an adequate sample.
+
+## Adding things up
+
+`survey_total()` is the survey counterpart of `sum()`. Applied to a continuous or count variable, it estimates the population total of that quantity. Applied to a 0/1 indicator, it estimates the number of population members for whom the indicator is 1. Unlike `survey_count()` and `survey_tally()`, it must be called inside `summarize()`.
+
+### Calling the function
+
+```r
+survey_total(
+  x,
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var", "cv"),
+  level = 0.95,
+  deff = FALSE,
+  df = NULL
+)
+```
+
+`x` is the variable or expression to add up, and it can be left empty to get a population count. `na.rm` decides whether missing values are dropped. `vartype` and `level` behave as described above. `deff` adds the design effect to the output, discussed in the section on design effects. `df` overrides the degrees of freedom used for confidence intervals.
+
+### How many children reach both minimum proficiency levels?
+
+`MPLBoth` is coded 1 for children who reach the minimum proficiency level in both reading and mathematics. Totalling it estimates how many children in the population have done so:
+
+```{r}
+#| label: dist-total-mpl
+mpl_both_total <- icanicar_des |>
+  summarize(children = survey_total(
+    MPLBoth,
+    na.rm = TRUE,
+    vartype = c("se", "ci")
+  ))
+
+mpl_both_total
+```
+
+```{r}
+#| label: dist-total-mpl-values
+#| include: false
+.mplb <- mpl_both_total
+```
+
+An estimated `r m_fmt(pull(.mplb, children))` children reach both thresholds, with a 95% confidence interval running from `r m_fmt(pull(.mplb, children_low))` to `r m_fmt(pull(.mplb, children_upp))`. Set against the `r m_fmt(.children)` children the survey represents, this is the headline result of the whole exercise: only about one child in three clears both bars.
+
+### Totals by country
+
+Grouping first gives the same total for each country. Confidence intervals are more informative than standard errors when the point estimates differ by orders of magnitude, and sorting makes the table easier to read:
+
+```{r}
+#| label: dist-total-country
+#| warning: false
+mpl_by_country <- icanicar_des |>
+  group_by(CountryName) |>
+  summarize(children = survey_total(MPLBoth, na.rm = TRUE, vartype = "ci")) |>
+  arrange(desc(children))
+
+mpl_by_country
+```
+
+These totals are driven as much by population size as by learning outcomes: a large country with mediocre proficiency contributes more children above the threshold than a small country doing well. Totals answer "how many", which is what budgeting and planning need. To compare how *well* countries are doing, we need proportions, which is the next section.
+
+### A total that answers no question
+
+Totals are easy to compute and easy to misuse. `hh06a` records household size, and every child assessed in a household carries the same value, so households with several assessed children appear several times:
+
+```{r}
+#| label: dist-total-trap
+#| warning: false
+icanicar_des |>
+  summarize(members = survey_total(hh06a))
+```
+
+The result runs into billions, which is far more people than live in the eleven countries combined. Nothing is wrong with the arithmetic; the problem is the unit of analysis. The design object is a sample of *children*, so summing a *household* attribute over children counts large households once for each child they contributed. Household-level totals need one row per household, which the chapter on central tendency and dispersion constructs before summarising household size.
+
+The general rule: before totalling a variable, ask which unit it describes, and check that this unit matches the rows of the design object.
+
+## Proportions and means
+
+Proportions and means are the estimates most readers of a report will actually look at. `survey_prop()` is for categorical variables and `survey_mean()` for continuous ones, but the two overlap: applied to an indicator coded 0/1, or to a logical variable, `survey_mean()` returns a proportion.
+
+### Calling the functions
+
+```r
+survey_mean(
+  x,
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var", "cv"),
+  level = 0.95,
+  proportion = FALSE,
+  prop_method = c("logit", "likelihood", "asin", "beta", "mean"),
+  deff = FALSE,
+  df = NULL
+)
+
+survey_prop(
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var", "cv"),
+  level = 0.95,
+  proportion = TRUE,
+  prop_method =
+    c("logit", "likelihood", "asin", "beta", "mean", "xlogit"),
+  deff = FALSE,
+  df = NULL
+)
+```
+
+The shared arguments (`na.rm`, `vartype`, `level`, `deff`, `df`) work as before. Two differences matter in practice.
+
+The first is where the variable goes. `survey_mean()` takes it as the argument `x`. `survey_prop()` has no such argument: the categories come from a preceding `group_by()`, and the function reports the share of the population in each. Adding `group_by()` before `survey_mean()` does something different — it splits the mean by domain.
+
+The second is the `proportion` argument, which controls how the confidence interval is built. Wald-type intervals of the form estimate plus or minus a multiple of the standard error can stray outside the range 0 to 1 and can have poor coverage when a proportion sits close to 0 or 1. Setting `proportion = TRUE`, which is the default in `survey_prop()`, switches to a method chosen by `prop_method`:
+
+-   `"logit"` (the default) works on the log-odds scale, where an interval cannot run past 0 or 1, and converts the bounds back to proportions afterwards.
+-   `"likelihood"` inverts a Rao-Scott scaled chi-squared test on the binomial log-likelihood.
+-   `"asin"` builds the interval on the arcsine square-root scale, which holds the binomial variance roughly constant, then transforms back.
+-   `"beta"` treats the estimate as binomial with an effective sample size implied by its variance, and reads the bounds from the beta distribution.
+-   `"mean"` is the plain Wald interval, and is what `survey_mean()` gives when `proportion = FALSE`.
+-   `"xlogit"` transforms the proportion with a logit, builds the interval, and transforms back; this is the default in SUDAAN and SPSS, and is the option to choose when results must line up with output from those packages.
+
+### The distribution of a single categorical variable
+
+`schooling` records whether a child is currently enrolled, has dropped out, or has never been to school. Grouping by it and calling `survey_prop()` estimates the share of children in each situation:
+
+```{r}
+#| label: dist-prop-schooling
+#| message: false
+#| warning: false
+schooling_p <- icanicar_des |>
+  group_by(schooling) |>
+  summarize(p = survey_prop(vartype = "ci"))
+
+schooling_p
+```
+
+```{r}
+#| label: dist-prop-schooling-values
+#| include: false
+.sch <- schooling_p |>
+  mutate(across(c(p, p_low, p_upp), \(x) p_fmt(x)))
+.pick <- function(lvl, col) .sch |> filter(schooling == lvl) |> pull({{ col }})
+```
+
+An estimated `r .pick("Currently Enrolled", p)` of children are enrolled, `r .pick("Never Enrolled", p)` have never enrolled, and `r .pick("Out of School", p)` have left school. The proportions add to 1 because the three categories are exhaustive. The interval for the smallest category, `r .pick("Out of School", p_low)` to `r .pick("Out of School", p_upp)`, is narrow in absolute terms but wide relative to the estimate itself, which is typical of rare outcomes.
+
+Because a proportion is the mean of a set of indicator variables, `survey_mean()` produces exactly the same numbers when the design is grouped and no variable is named:
+
+```{r}
+#| label: dist-prop-as-mean
+#| message: false
+#| warning: false
+icanicar_des |>
+  group_by(schooling) |>
+  summarize(p = survey_mean(vartype = "ci"))
+```
+
+### Conditional and joint proportions
+
+Grouping by two variables changes the meaning of the estimate, and this is the single most common source of confusion in reporting cross-tabulations. With `group_by(residence, mpl_math)`, the proportions are *conditional*: they sum to 1 within each residence category, so they read as proficiency rates for rural and for urban children.
+
+```{r}
+#| label: dist-prop-conditional
+#| message: false
+#| warning: false
+mpl_by_residence <- icanicar_des |>
+  filter(!is.na(mpl_math)) |>
+  group_by(residence, mpl_math) |>
+  summarize(p = survey_prop(vartype = "ci"))
+
+mpl_by_residence
+```
+
+```{r}
+#| label: dist-prop-conditional-values
+#| include: false
+.cond <- mpl_by_residence |>
+  filter(mpl_math == "At or above MPL")
+.rural <- .cond |> filter(residence == "Rural") |> pull(p)
+.urban <- .cond |> filter(residence == "Urban") |> pull(p)
+```
+
+Read this way, `r p_fmt(.rural)` of rural children reach the mathematics threshold compared with `r p_fmt(.urban)` of urban children, a gap of `r number((.urban - .rural) * 100, accuracy = 0.1)` percentage points. The confidence intervals do not overlap, so the gap is larger than sampling error alone would explain. The chapter on bivariate analysis shows how to test such a difference formally.
+
+Wrapping the grouping variables in `interact()` instead gives *joint* proportions, which sum to 1 across the whole table:
+
+```{r}
+#| label: dist-prop-joint
+#| message: false
+#| warning: false
+icanicar_des |>
+  filter(!is.na(mpl_math)) |>
+  group_by(interact(residence, mpl_math)) |>
+  summarize(p = survey_prop())
+```
+
+Now each cell is a share of all children rather than of children in that residence category. The urban proficient cell, for instance, is the proportion of children in the population who are both urban and above the threshold, a quantity that depends on how urbanised these countries are as well as on how well urban children perform. Conditional proportions compare groups; joint proportions describe the composition of the population. Choose deliberately, and say in the text which one is being reported.
+
+### When the choice of interval method matters
+
+For the estimates above, all six `prop_method` options return practically the same interval, because the effective sample is large and the proportions are not near a boundary. The methods separate when the estimate is small and the subpopulation is thin. Take the mathematics proficiency rate among five- and six-year-olds in Mali:
+
+```{r}
+#| label: dist-prop-methods
+#| message: false
+#| warning: false
+young_mali <- icanicar_des |>
+  filter(CountryName == "Mali", ch02 %in% c(5, 6), !is.na(MPLMath))
+
+prop_methods <- c("logit", "likelihood", "asin", "beta", "mean", "xlogit")
+
+interval_comparison <- prop_methods |>
+  map(\(method) {
+    young_mali |>
+      summarize(p = survey_mean(
+        MPLMath,
+        proportion = TRUE,
+        prop_method = method,
+        vartype = "ci"
+      )) |>
+      mutate(prop_method = method)
+  }) |>
+  list_rbind() |>
+  select(prop_method, p, p_low, p_upp)
+
+interval_comparison
+```
+
+The point estimate is identical in every row, as it must be, but the lower bound varies by a factor of four across methods. The Wald interval (`"mean"`) reaches furthest towards zero and would cross it for a slightly rarer outcome, which is precisely the failure the other methods are designed to avoid. The practical advice is to leave the default `"logit"` in place, and to report which method was used whenever an estimate is small enough for the choice to change the conclusion.
+
+### Means of continuous variables
+
+`MathIRTScore` is a latent ability score, standardised so that values near zero represent typical performance across the pooled sample. Its population mean, with both a standard error and a confidence interval:
+
+```{r}
+#| label: dist-mean-math
+math_mean <- icanicar_des |>
+  summarize(score = survey_mean(
+    MathIRTScore,
+    na.rm = TRUE,
+    vartype = c("se", "ci")
+  ))
+
+math_mean
+```
+
+Grouping splits the mean by domain. Sorting the countries makes the spread of average performance immediately visible:
+
+```{r}
+#| label: dist-mean-country
+#| warning: false
+math_by_country <- icanicar_des |>
+  group_by(CountryName) |>
+  summarize(score = survey_mean(MathIRTScore, na.rm = TRUE, vartype = "ci")) |>
+  arrange(score)
+
+math_by_country
+```
+
+```{r}
+#| label: dist-mean-country-values
+#| include: false
+.lowest <- math_by_country |> slice(1)
+.highest <- math_by_country |> slice(n())
+```
+
+Average mathematics ability ranges from `r d_fmt(pull(.lowest, score), 2)` in `r pull(.lowest, CountryName)` to `r d_fmt(pull(.highest, score), 2)` in `r pull(.highest, CountryName)`, a spread of more than a standard deviation of the pooled score distribution. Because the score has no natural units, differences like these are best described in relative terms or converted to proficiency rates, which are what most readers will want anyway.
+
+## Quantiles and medians
+
+A mean compresses a distribution into a single number and can be pulled away from the typical case by a few extreme values. Quantiles describe the shape of the distribution instead. `survey_quantile()` estimates any set of quantiles; `survey_median()` is a convenience wrapper for the 50th percentile.
+
+### Calling the functions
+
+```r
+survey_quantile(
+  x,
+  quantiles,
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var", "cv"),
+  level = 0.95,
+  interval_type =
+    c("mean", "beta", "xlogit", "asin", "score", "quantile"),
+  qrule = c("math", "school", "shahvaish", "hf1", "hf2", "hf3",
+            "hf4", "hf5", "hf6", "hf7", "hf8", "hf9"),
+  df = NULL
+)
+
+survey_median(
+  x,
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var", "cv"),
+  level = 0.95,
+  interval_type =
+    c("mean", "beta", "xlogit", "asin", "score", "quantile"),
+  qrule = c("math", "school", "shahvaish", "hf1", "hf2", "hf3",
+            "hf4", "hf5", "hf6", "hf7", "hf8", "hf9"),
+  df = NULL
+)
+```
+
+The only structural difference is the `quantiles` argument, a vector of values between 0 and 1 that `survey_median()` fixes at 0.5. Two further arguments deserve comment. `interval_type` selects the confidence interval method; besides the options already met for proportions, quantiles offer `"score"`, which inverts a score test and is available for design-based objects only, and `"quantile"`, which uses the replicate distribution and is valid for bootstrap and balanced repeated replication weights but not for jackknife weights. The `score` method behaves poorly when many observations tie on the same value, which is common for ages, grades, and item counts, so an interval-based method is safer for those variables. `qrule` decides how a quantile is defined when it falls between two observed values; `vignette("qrule", package = "survey")` works through the alternatives.
+
+### Quartiles of the mathematics score
+
+```{r}
+#| label: dist-quartiles
+math_quartiles <- icanicar_des |>
+  summarize(score = survey_quantile(
+    MathIRTScore,
+    quantiles = c(0.25, 0.5, 0.75),
+    na.rm = TRUE
+  ))
+
+math_quartiles
+```
+
+```{r}
+#| label: dist-quartiles-values
+#| include: false
+.q <- math_quartiles
+.mean_score <- pull(math_mean, score)
+```
+
+The quartiles are `r d_fmt(pull(.q, score_q25), 2)`, `r d_fmt(pull(.q, score_q50), 2)`, and `r d_fmt(pull(.q, score_q75), 2)`. The middle half of children therefore sit within a band about `r d_fmt(pull(.q, score_q75) - pull(.q, score_q25), 2)` score points wide. The median, `r d_fmt(pull(.q, score_q50), 2)`, is slightly above the mean of `r d_fmt(.mean_score, 2)`, which points to a mild left skew: a tail of very low-scoring children pulls the average down below the typical child.
+
+Medians can be grouped like any other estimate:
+
+```{r}
+#| label: dist-median-residence
+#| warning: false
+icanicar_des |>
+  group_by(residence) |>
+  summarize(score = survey_median(MathIRTScore, na.rm = TRUE, vartype = "ci"))
+```
+
+### Where quantiles earn their keep
+
+Assessment duration shows why a median is sometimes the only defensible summary. `IcanAssessTime` records how long the numeracy assessment took in minutes, and a handful of records run to several hours, almost certainly because a tablet was left open rather than because a child worked for that long.
+
+```{r}
+#| label: dist-time-summary
+time_summary <- icanicar_des |>
+  summarize(
+    mean_minutes = survey_mean(IcanAssessTime, na.rm = TRUE, vartype = NULL),
+    median_minutes = survey_median(IcanAssessTime, na.rm = TRUE, vartype = NULL),
+    p90_minutes = survey_quantile(
+      IcanAssessTime,
+      quantiles = 0.9,
+      na.rm = TRUE,
+      vartype = NULL
+    ),
+    longest_minutes = unweighted(max(IcanAssessTime, na.rm = TRUE))
+  )
+
+time_summary
+```
+
+```{r}
+#| label: dist-time-values
+#| include: false
+.t <- time_summary
+```
+
+The median assessment takes `r d_fmt(pull(.t, median_minutes), 1)` minutes and nine children in ten finish within `r d_fmt(pull(.t, p90_minutes_q90), 1)` minutes, yet the mean is `r d_fmt(pull(.t, mean_minutes), 1)` minutes and the longest record is `r d_fmt(pull(.t, longest_minutes), 0)` minutes. Reporting the mean here would misdescribe almost every assessment in the survey. Note also `unweighted()`, used to pull a sample maximum out of the design object; it is covered properly below.
+
+Quantiles of 0 and 1 are accepted but are a trap:
+
+```{r}
+#| label: dist-quantile-minmax
+icanicar_des |>
+  summarize(score = survey_quantile(
+    MathIRTScore,
+    quantiles = c(0, 1),
+    na.rm = TRUE
+  ))
+```
+
+These are the smallest and largest values *in the sample*. The maximum has a standard error of exactly 0, which is not a claim of perfect precision but a sign that no valid uncertainty can be attached to an extreme order statistic. Extremes do not generalise from a sample to a population, so avoid presenting them as population estimates.
+
+## Ratios
+
+A ratio estimates the total of one variable divided by the total of another:
+
+$$\frac{\sum x_i}{\sum y_i}$$
+
+This is not the same as averaging the individual ratios,
+
+$$\frac{1}{N}\sum \frac{x_i}{y_i},$$
+
+which is what `survey_mean()` returns if we construct the quotient first. The distinction is easy to state and easy to forget: the first weights each case by the size of its denominator, so big cases count for more; the second treats every case equally.
+
+### Calling the function
+
+```r
+survey_ratio(
+  numerator,
+  denominator,
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var", "cv"),
+  level = 0.95,
+  deff = FALSE,
+  df = NULL
+)
+```
+
+The first two arguments are the numerator and denominator variables; the rest behave as in the other estimators.
+
+### How much longer is the numeracy assessment than the reading one?
+
+Every child who completed both assessments has a timing for each. The two ways of expressing "how much longer ICAN takes than ICAR" give different answers:
+
+```{r}
+#| label: dist-ratio
+#| warning: false
+time_ratio <- icanicar_des |>
+  summarize(
+    ican_total = survey_total(IcanAssessTime, na.rm = TRUE, vartype = NULL),
+    icar_total = survey_total(IcarAssessTime, na.rm = TRUE, vartype = NULL),
+    ratio_of_totals = survey_ratio(IcanAssessTime, IcarAssessTime, na.rm = TRUE),
+    mean_of_ratios = survey_mean(
+      IcanAssessTime / IcarAssessTime,
+      na.rm = TRUE,
+      vartype = NULL
+    )
+  )
+
+time_ratio
+```
+
+```{r}
+#| label: dist-ratio-values
+#| include: false
+.r <- time_ratio
+```
+
+The ratio of totals is `r d_fmt(pull(.r, ratio_of_totals), 2)`: across all the assessment time the survey represents, `r d_fmt(pull(.r, ratio_of_totals), 2)` minutes went into numeracy for every minute spent on reading. It is exactly the quotient of the two totals shown alongside it, which is worth confirming by hand once, although only `survey_ratio()` gives the correct standard error for it. The mean of the individual ratios is `r d_fmt(pull(.r, mean_of_ratios), 2)`, noticeably larger, because children who raced through the reading assessment produce very large individual quotients and each of them counts as much as a child who took an hour.
+
+Neither number is wrong. The ratio of totals answers "how is total assessment time divided between the two instruments", which is the question a fieldwork budget asks. The mean of ratios answers "for a typical child, how do the two durations compare". Ratios of totals also vary by context:
+
+```{r}
+#| label: dist-ratio-country
+#| warning: false
+icanicar_des |>
+  group_by(CountryName) |>
+  summarize(ratio = survey_ratio(IcanAssessTime, IcarAssessTime, na.rm = TRUE)) |>
+  arrange(ratio)
+```
+
+## Correlation
+
+`survey_corr()` estimates Pearson's correlation between two continuous variables, applying the survey weights. For a simple random sample the sample correlation is
+
+$$\frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2}\sqrt{\sum (y_i - \bar{y})^2}}$$
+
+and the survey version replaces the unweighted sums with weighted ones. The result stays between -1 and 1 and measures only the strength of a *linear* relationship.
+
+### Calling the function
+
+```r
+survey_corr(
+  x,
+  y,
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var", "cv"),
+  level = 0.95,
+  df = NULL
+)
+```
+
+`x` and `y` are the two variables or expressions; the remaining arguments are the familiar ones.
+
+### Do reading and numeracy travel together?
+
+```{r}
+#| label: dist-corr
+#| warning: false
+score_corr <- icanicar_des |>
+  summarize(correlation = survey_corr(
+    MathIRTScore,
+    ReadingIRTScore,
+    na.rm = TRUE,
+    vartype = "ci"
+  ))
+
+score_corr
+```
+
+```{r}
+#| label: dist-corr-values
+#| include: false
+.c <- score_corr
+```
+
+The correlation is `r d_fmt(pull(.c, correlation), 2)`, a strong positive relationship: children who read well tend to do well in mathematics, which is what we would expect if both depend on shared foundations such as language of instruction, years of effective schooling, and home support. It is not close enough to 1 to treat the two scores as interchangeable, and correlation says nothing about which skill supports the other.
+
+Splitting the estimate by domain tests whether the association itself varies:
+
+```{r}
+#| label: dist-corr-residence
+#| warning: false
+icanicar_des |>
+  group_by(residence) |>
+  summarize(correlation = survey_corr(
+    MathIRTScore,
+    ReadingIRTScore,
+    na.rm = TRUE
+  ))
+```
+
+The association is essentially the same in rural and urban areas. Levels of achievement differ sharply between the two, as the earlier proportions showed, but the way reading and numeracy move together does not.
+
+## Variance and standard deviation
+
+Every estimator in this chapter reports the uncertainty of its own estimate, and that is a different thing from the spread of the underlying variable. When the spread itself is the object of interest, `survey_var()` and `survey_sd()` estimate the population variance and standard deviation. These come up less often than the other functions, but they are useful for describing inequality in outcomes and for planning the sample size of a future survey.
+
+### Calling the functions
+
+```r
+survey_var(
+  x,
+  na.rm = FALSE,
+  vartype = c("se", "ci", "var"),
+  level = 0.95,
+  df = NULL
+)
+
+survey_sd(
+  x,
+  na.rm = FALSE
+)
+```
+
+Since the standard deviation is just the variance put back on the scale of the original variable, the two functions share their arguments, except that `survey_sd()` accepts no `vartype`: it is the one estimate in the chapter that comes without a standard error.
+
+### How unequal are learning outcomes?
+
+```{r}
+#| label: dist-var
+#| warning: false
+icanicar_des |>
+  summarize(
+    variance = survey_var(MathIRTScore, na.rm = TRUE),
+    std_dev = survey_sd(MathIRTScore, na.rm = TRUE)
+  )
+```
+
+The output gives the estimated population variance, its standard error, and the estimated standard deviation. Depending on the versions of R and {survey} installed, `survey_var()` may also emit a warning about a deprecated recycling operation in its internal calculation; the estimates are unaffected.
+
+Comparing spread across countries is often more revealing than comparing averages, because a country can raise its mean while leaving the weakest children behind:
+
+```{r}
+#| label: dist-var-country
+#| warning: false
+spread_by_country <- icanicar_des |>
+  group_by(CountryName) |>
+  summarize(
+    variance = survey_var(MathIRTScore, na.rm = TRUE, vartype = NULL),
+    std_dev = survey_sd(MathIRTScore, na.rm = TRUE)
+  ) |>
+  arrange(desc(std_dev))
+
+spread_by_country
+```
+
+```{r}
+#| label: dist-var-country-values
+#| include: false
+.wide <- spread_by_country |> slice(1)
+.narrow <- spread_by_country |> slice(n())
+```
+
+Scores are most dispersed in `r pull(.wide, CountryName)` (standard deviation `r d_fmt(pull(.wide, std_dev), 2)`) and most tightly clustered in `r pull(.narrow, CountryName)` (`r d_fmt(pull(.narrow, std_dev), 2)`). A wide distribution and a modest mean together suggest a system serving some children well and others hardly at all, which calls for a different response than a system where nearly everyone performs poorly.
+
+## Rounding out the toolkit
+
+The remaining tools are less about new statistics than about producing analysis that is efficient to write and honest to read.
+
+### Comparing weighted and unweighted results
+
+`unweighted()` evaluates an ordinary R expression on the rows of the design object, ignoring the weights. It describes the children who were assessed rather than the population they represent, and putting the two side by side shows how much the weights are doing:
+
+```{r}
+#| label: dist-unweighted
+#| warning: false
+icanicar_des |>
+  summarize(
+    weighted_mean = survey_mean(MathIRTScore, na.rm = TRUE, vartype = NULL),
+    sample_mean = unweighted(mean(MathIRTScore, na.rm = TRUE)),
+    children_assessed = unweighted(sum(!is.na(MathIRTScore)))
+  )
+```
+
+The two means differ substantially. The sample mean is the lower of the two because countries and areas with weaker results are over-represented in the sample relative to their share of the population; the weights correct for that. Reporting the unweighted figure as a population estimate would overstate how badly children are doing. `unweighted()` is for sample descriptions, quality checks, and reporting how many observations an estimate rests on, never for population claims.
+
+### Restricting to a subpopulation
+
+Estimates for part of the population are produced by `filter()`, applied to the design object rather than the data. The design keeps the information about the excluded cases that the variance calculation needs, which is why the order matters.
+
+```{r}
+#| label: dist-subpop
+#| warning: false
+enrolled_mpl <- icanicar_des |>
+  filter(EnrolmentStatus == "Currently Enrolled") |>
+  summarize(p = survey_mean(MPLMath, na.rm = TRUE, vartype = "ci"))
+
+all_mpl <- icanicar_des |>
+  summarize(p = survey_mean(MPLMath, na.rm = TRUE, vartype = "ci"))
+
+bind_rows(
+  enrolled_mpl |> mutate(population = "Currently enrolled"),
+  all_mpl |> mutate(population = "All children")
+) |>
+  relocate(population)
+```
+
+```{r}
+#| label: dist-subpop-values
+#| include: false
+.e <- pull(enrolled_mpl, p)
+.a <- pull(all_mpl, p)
+```
+
+Mathematics proficiency is `r p_fmt(.e)` among enrolled children and `r p_fmt(.a)` among all children. The difference is modest because most children in the survey are enrolled, but the two figures answer different questions and should never be swapped: one describes what schooling is delivering, the other describes the whole cohort including children school never reached.
+
+### Design effects and effective sample size {#dist-deff}
+
+Clustered samples are cheaper to collect than simple random samples but carry less information per observation, because children in the same village resemble each other. The design effect quantifies that loss: it is the variance of an estimate under the actual design divided by its variance under simple random sampling without replacement. A value above 1 says the design buys less precision than simple random sampling would for the same number of observations; a value below 1, which is uncommon but does happen when the strata line up closely with the outcome, says it buys more. Dividing the sample size by the design effect gives the effective sample size,
+
+$$n_{eff} = \frac{n}{D_{eff}},$$
+
+the size of the simple random sample that would have produced equally precise estimates. Setting `deff = TRUE` requests it:
+
+```{r}
+#| label: dist-deff
+#| warning: false
+math_deff <- icanicar_des |>
+  filter(!is.na(MathIRTScore)) |>
+  summarize(
+    score = survey_mean(MathIRTScore, deff = TRUE),
+    children = unweighted(length(MathIRTScore))
+  ) |>
+  mutate(n_effective = children / score_deff)
+
+math_deff
+```
+
+```{r}
+#| label: dist-deff-values
+#| include: false
+.dff <- math_deff
+```
+
+The design effect for the mean mathematics score is `r d_fmt(pull(.dff, score_deff), 1)`, so the `r n_fmt(pull(.dff, children))` assessed children carry about as much information as a simple random sample of `r n_fmt(pull(.dff, n_effective))`. That is a large effect, and it has a straightforward explanation: with roughly 20 households per enumeration area, and learning outcomes strongly clustered by community and school, neighbouring children supply overlapping information. It also explains why ignoring the design would be so misleading here, since standard errors computed as if the sample were random would be far too small.
+
+Design effects are specific to each outcome. Variables that vary within a village more than between villages, such as the child's sex, show much weaker clustering than variables shaped by the local school and language environment.
+
+### Adding summary rows with `cascade()`
+
+`group_by()` followed by `summarize()` gives one row per group and nothing else. Reports usually want a total row alongside the groups. `cascade()` replaces `summarize()` and adds it:
+
+```r
+cascade(
+  .data,
+  ...,
+  .fill = NA,
+  .fill_level_top = FALSE,
+  .groupings = NULL
+)
+```
+
+`.data` is the design object and `...` takes the same name-value pairs as `summarize()`. `.fill` supplies the label for the summary row, `NA` by default. `.fill_level_top` moves that row to the top of the output, which works when the grouping variable is a factor.
+
+```{r}
+#| label: dist-cascade
+#| warning: false
+icanicar_des |>
+  group_by(residence) |>
+  cascade(
+    score = survey_mean(MathIRTScore, na.rm = TRUE),
+    children = survey_total(MPLBoth, na.rm = TRUE, vartype = NULL),
+    .fill = "All areas"
+  )
+```
+
+The final row is the overall estimate, not a third residence category, and giving it a label such as "All areas" through `.fill` prevents readers from misreading an `NA` as missing data.
+
+### Estimating several outcomes at once
+
+Reporting rarely stops at one indicator. `across()` applies the same estimator to several variables inside a single `summarize()`, and `.unpack` controls how the resulting columns are named:
+
+```{r}
+#| label: dist-across
+#| warning: false
+mpl_wide <- icanicar_des |>
+  summarize(across(
+    c(MPLReading, MPLMath, MPLBoth),
+    ~ survey_mean(.x, na.rm = TRUE, vartype = "ci"),
+    .unpack = "{outer}.{inner}"
+  ))
+
+mpl_wide
+```
+
+One wide row is convenient for the computer and awkward for a reader. `pivot_longer()` turns it into one row per indicator, using a regular expression to split each column name at the dot:
+
+```{r}
+#| label: dist-across-long
+mpl_long <- mpl_wide |>
+  pivot_longer(
+    everything(),
+    names_to = c("indicator", ".value"),
+    names_pattern = "(.*)\\.(.*)"
+  ) |>
+  rename(proportion = coef, lower = `_low`, upper = `_upp`) |>
+  mutate(indicator = recode(
+    indicator,
+    MPLReading = "Reading",
+    MPLMath = "Mathematics",
+    MPLBoth = "Both subjects"
+  ))
+
+mpl_long
+```
+
+```{r}
+#| label: dist-across-long-values
+#| include: false
+.ml <- mpl_long |>
+  mutate(across(c(proportion, lower, upper), p_fmt))
+.get <- function(ind) .ml |> filter(indicator == ind) |> pull(proportion)
+```
+
+The table now reads as a set of findings: `r .get("Reading")` of children reach the reading threshold, `r .get("Mathematics")` the mathematics threshold, and `r .get("Both subjects")` both. Turning a table like this into publication-ready output is what packages such as {gt} and {gtsummary}, introduced in Chapter \@ref(c05-setting-up), are for.
+
+`across()` does not work with `survey_prop()`, which takes its variable from `group_by()` rather than as an argument. When the same breakdown is needed for several categorical variables, write a small function and map over the variable names instead:
+
+```{r}
+#| label: dist-map
+#| warning: false
+mpl_split_by <- function(variable) {
+  icanicar_des |>
+    filter(!is.na(.data[[variable]]), !is.na(MPLMath)) |>
+    group_by(.data[[variable]]) |>
+    summarize(p = survey_mean(MPLMath, na.rm = TRUE, vartype = "ci")) |>
+    rename(category = 1) |>
+    mutate(variable = variable, category = as.character(category)) |>
+    relocate(variable)
+}
+
+c("sex", "residence", "schooling") |>
+  map(mpl_split_by) |>
+  list_rbind()
+```
+
+The function is written once, the mapping extends to as many variables as needed, and `list_rbind()` stacks the pieces into a single tidy table. Because the grouping variable is supplied as a string, `.data[[variable]]` is used to look it up, and `rename(category = 1)` gives the first column a common name so the results can be stacked. This pattern scales to the dozens of background variables a full descriptive report usually needs.
+
+## Exercises
+
+The exercises use `icanicar_des` from the Prerequisites box.
+
+1.  How many children in the population have never been enrolled in school? Report a 95% confidence interval. Hint: `schooling` distinguishes the three enrolment categories.
+2.  What proportion of girls and of boys reach the minimum proficiency level in reading? Hint: group by `sex` and use `mpl_reading`, or take the mean of `MPLReading`.
+3.  Estimate the median reading score for rural and urban children, with confidence intervals. Which group has the wider interval, and why might that be?
+4.  Produce a table of the estimated number of children currently enrolled in each country, sorted from largest to smallest, with a summary row for all countries. Hint: `cascade()`.
+5.  Estimate the design effect attached to the reading proficiency proportion, convert it into an effective sample size, and compare it with the design effect attached to the mean reading score. Which of the two loses more precision to clustering?
+6.  Is the time spent on the numeracy assessment related to the time spent on the reading assessment? Estimate the correlation between `IcanAssessTime` and `IcarAssessTime`, then repeat it separately for children assessed in their home language and children who were not (`AssHomeLang`).
+7.  Among children who are currently enrolled, estimate the proportion reaching the minimum proficiency level in mathematics for each single year of age from 7 to 12. Describe the pattern in two or three sentences. Hint: `filter()` the design first, then group by `ch02`.
+8.  Compare the weighted and unweighted proportions of children living in urban areas. What does the difference tell you about how the sample was drawn?
+
+## Further reading
+
+The {srvyr} [reference documentation](https://cran.r-project.org/package=srvyr) is the authoritative source on the functions used in this chapter, and each help page lists the {survey} function it calls. Zimmer, Powell, and Velásquez-Hernández's *Exploring Complex Survey Data Analysis Using R* ([tidy-survey-r.github.io/tidy-survey-book](https://tidy-survey-r.github.io/tidy-survey-book/)) works through the same estimators using United States survey data and goes further into replicate-weight designs. For the sampling design, weights, and questionnaire content behind the estimates above, see the PAL Network documentation collected in the [DataFirst metadata record](https://www.datafirst.uct.ac.za/dataportal/index.php/catalog/1132) for ICAN-ICAR 2025.

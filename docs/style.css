@@ -156,7 +156,8 @@ h3.hasAnchor#prereq3 #prereq4 #prereq5 #prereq6 #prereq7 #prereq8 #prereq9 #prer
     object-fit: cover;
 }
 
-.page-inner {
+/* Only reserve hero space when a hero image is actually present */
+.page-inner:has(.hero-image-container) {
     padding-top: 400px !important;
 }
 
@@ -202,6 +203,21 @@ li.appendix span, li.part span { /* for TOC part names */
 
 .summary > li:first-child {
     height: auto !important;
+}
+
+.book .book-summary ul.summary li.home-link > a {
+    font-weight: 700;
+    color: #0b3954 !important;
+    background: #eafbff;
+    border-radius: 8px;
+    margin: 8px 12px;
+    padding: 8px 12px;
+    display: block;
+}
+
+.book .book-summary ul.summary li.home-link > a:hover {
+    background: #66defb;
+    color: #0a1f4a !important;
 }
 
 em {

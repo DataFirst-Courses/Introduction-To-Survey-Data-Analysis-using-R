@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 4 Understanding Distributions | ICAN-ICAR Analysis Guide</title>
+  <meta name="description" content=" 4 Understanding Distributions | ICAN-ICAR Analysis Guide" />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 4 Understanding Distributions | ICAN-ICAR Analysis Guide" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 4 Understanding Distributions | ICAN-ICAR Analysis Guide" />
+  
+  
+  
+
+<meta name="author" content="African Foundational Learning Data Hub at DataFirst" />
+
+
+<meta name="date" content="2026-07-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="c03-setting-up.html"/>
+<link rel="next" href="c05-modeling.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="toc-logo"><a href="index.html"><img src="files/AFLEARN logo.png" alt="AFLEARN"></a></li>
+<li class="home-link"><a href="index.html"><i class="fa fa-home"></i> Guide home</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="ch-whats-in-data.html"><a href="ch-whats-in-data.html"><i class="fa fa-check"></i><b>1</b> Understanding ICAN-ICAR Data</a></li>
+<li class="chapter" data-level="2" data-path="c02-wrangling.html"><a href="c02-wrangling.html"><i class="fa fa-check"></i><b>2</b> Data Wrangling with tidyverse</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="c02-wrangling.html"><a href="c02-wrangling.html#what-makes-the-tidyverse-special"><i class="fa fa-check"></i><b>2.1</b> What makes the tidyverse special?</a></li>
+<li class="chapter" data-level="2.2" data-path="c02-wrangling.html"><a href="c02-wrangling.html#why-learn-dplyr-first"><i class="fa fa-check"></i><b>2.2</b> Why learn dplyr first?</a></li>
+<li class="chapter" data-level="2.3" data-path="c02-wrangling.html"><a href="c02-wrangling.html#data-wrangling-with-dplyr"><i class="fa fa-check"></i><b>2.3</b> Data wrangling with dplyr</a></li>
+<li class="chapter" data-level="2.4" data-path="c02-wrangling.html"><a href="c02-wrangling.html#import-data"><i class="fa fa-check"></i><b>2.4</b> Import Data</a></li>
+<li class="chapter" data-level="2.5" data-path="c02-wrangling.html"><a href="c02-wrangling.html#working-with-tibbles"><i class="fa fa-check"></i><b>2.5</b> Working with Tibbles</a></li>
+<li class="chapter" data-level="2.6" data-path="c02-wrangling.html"><a href="c02-wrangling.html#the-five-key-dplyr-verbs"><i class="fa fa-check"></i><b>2.6</b> The Five Key dplyr Verbs</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="c02-wrangling.html"><a href="c02-wrangling.html#filtering-rows-with-filter"><i class="fa fa-check"></i><b>2.6.1</b> Filtering rows with <code>filter()</code></a></li>
+<li class="chapter" data-level="2.6.2" data-path="c02-wrangling.html"><a href="c02-wrangling.html#introducing-the-pipe"><i class="fa fa-check"></i><b>2.6.2</b> Introducing the pipe</a></li>
+<li class="chapter" data-level="2.6.3" data-path="c02-wrangling.html"><a href="c02-wrangling.html#arranging-rows-with-arrange"><i class="fa fa-check"></i><b>2.6.3</b> Arranging rows with <code>arrange()</code></a></li>
+<li class="chapter" data-level="2.6.4" data-path="c02-wrangling.html"><a href="c02-wrangling.html#selecting-columns-with-select"><i class="fa fa-check"></i><b>2.6.4</b> Selecting columns with <code>select()</code></a></li>
+<li class="chapter" data-level="2.6.5" data-path="c02-wrangling.html"><a href="c02-wrangling.html#adding-new-variables-with-mutate"><i class="fa fa-check"></i><b>2.6.5</b> Adding new variables with <code>mutate()</code></a></li>
+<li class="chapter" data-level="2.6.6" data-path="c02-wrangling.html"><a href="c02-wrangling.html#aggregating-over-rows-with-summarise"><i class="fa fa-check"></i><b>2.6.6</b> Aggregating over rows with <code>summarise()</code></a></li>
+<li class="chapter" data-level="2.6.7" data-path="c02-wrangling.html"><a href="c02-wrangling.html#sources-and-references"><i class="fa fa-check"></i><b>2.6.7</b> Sources and references</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>I Analysis</b></span></li>
+<li class="chapter" data-level="3" data-path="c03-setting-up.html"><a href="c03-setting-up.html"><i class="fa fa-check"></i><b>3</b> Getting Started</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="c03-setting-up.html"><a href="c03-setting-up.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="c03-setting-up.html"><a href="c03-setting-up.html#setup"><i class="fa fa-check"></i><b>3.2</b> Setup</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="c03-setting-up.html"><a href="c03-setting-up.html#packages"><i class="fa fa-check"></i><b>3.2.1</b> Packages</a></li>
+<li class="chapter" data-level="3.2.2" data-path="c03-setting-up.html"><a href="c03-setting-up.html#ican-icar-2025-data"><i class="fa fa-check"></i><b>3.2.2</b> ICAN-ICAR 2025 Data</a></li>
+<li class="chapter" data-level="3.2.3" data-path="c03-setting-up.html"><a href="c03-setting-up.html#survey-design-object"><i class="fa fa-check"></i><b>3.2.3</b> Survey Design Object</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="c03-setting-up.html"><a href="c03-setting-up.html#survey-analysis-process"><i class="fa fa-check"></i><b>3.3</b> Survey Analysis Process</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="c04-distributions.html"><a href="c04-distributions.html"><i class="fa fa-check"></i><b>4</b> Understanding Distributions</a>
+<ul>
+<li class="chapter" data-level="" data-path="c04-distributions.html"><a href="c04-distributions.html#prereq6"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="4.1" data-path="c04-distributions.html"><a href="c04-distributions.html#from-a-sample-of-children-to-a-population-of-learners"><i class="fa fa-check"></i><b>4.1</b> From a sample of children to a population of learners</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="c04-distributions.html"><a href="c04-distributions.html#matching-statistics-to-the-type-of-variable"><i class="fa fa-check"></i><b>4.1.1</b> Matching statistics to the type of variable</a></li>
+<li class="chapter" data-level="4.1.2" data-path="c04-distributions.html"><a href="c04-distributions.html#what-this-chapter-covers"><i class="fa fa-check"></i><b>4.1.2</b> What this chapter covers</a></li>
+<li class="chapter" data-level="4.1.3" data-path="c04-distributions.html"><a href="c04-distributions.html#missing-values-are-not-spread-evenly"><i class="fa fa-check"></i><b>4.1.3</b> Missing values are not spread evenly</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="c04-distributions.html"><a href="c04-distributions.html#counting-children-and-cross-tabulating"><i class="fa fa-check"></i><b>4.2</b> Counting children and cross-tabulating</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="c04-distributions.html"><a href="c04-distributions.html#calling-the-functions"><i class="fa fa-check"></i><b>4.2.1</b> Calling the functions</a></li>
+<li class="chapter" data-level="4.2.2" data-path="c04-distributions.html"><a href="c04-distributions.html#how-many-children-does-the-sample-represent"><i class="fa fa-check"></i><b>4.2.2</b> How many children does the sample represent?</a></li>
+<li class="chapter" data-level="4.2.3" data-path="c04-distributions.html"><a href="c04-distributions.html#cross-tabulating-by-country-and-location"><i class="fa fa-check"></i><b>4.2.3</b> Cross-tabulating by country and location</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="c04-distributions.html"><a href="c04-distributions.html#when-a-stratum-contains-only-one-village"><i class="fa fa-check"></i><b>4.3</b> When a stratum contains only one village</a></li>
+<li class="chapter" data-level="4.4" data-path="c04-distributions.html"><a href="c04-distributions.html#adding-things-up"><i class="fa fa-check"></i><b>4.4</b> Adding things up</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="c04-distributions.html"><a href="c04-distributions.html#calling-the-function"><i class="fa fa-check"></i><b>4.4.1</b> Calling the function</a></li>
+<li class="chapter" data-level="4.4.2" data-path="c04-distributions.html"><a href="c04-distributions.html#how-many-children-reach-both-minimum-proficiency-levels"><i class="fa fa-check"></i><b>4.4.2</b> How many children reach both minimum proficiency levels?</a></li>
+<li class="chapter" data-level="4.4.3" data-path="c04-distributions.html"><a href="c04-distributions.html#totals-by-country"><i class="fa fa-check"></i><b>4.4.3</b> Totals by country</a></li>
+<li class="chapter" data-level="4.4.4" data-path="c04-distributions.html"><a href="c04-distributions.html#a-total-that-answers-no-question"><i class="fa fa-check"></i><b>4.4.4</b> A total that answers no question</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="c04-distributions.html"><a href="c04-distributions.html#proportions-and-means"><i class="fa fa-check"></i><b>4.5</b> Proportions and means</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="c04-distributions.html"><a href="c04-distributions.html#calling-the-functions-1"><i class="fa fa-check"></i><b>4.5.1</b> Calling the functions</a></li>
+<li class="chapter" data-level="4.5.2" data-path="c04-distributions.html"><a href="c04-distributions.html#the-distribution-of-a-single-categorical-variable"><i class="fa fa-check"></i><b>4.5.2</b> The distribution of a single categorical variable</a></li>
+<li class="chapter" data-level="4.5.3" data-path="c04-distributions.html"><a href="c04-distributions.html#conditional-and-joint-proportions"><i class="fa fa-check"></i><b>4.5.3</b> Conditional and joint proportions</a></li>
+<li class="chapter" data-level="4.5.4" data-path="c04-distributions.html"><a href="c04-distributions.html#when-the-choice-of-interval-method-matters"><i class="fa fa-check"></i><b>4.5.4</b> When the choice of interval method matters</a></li>
+<li class="chapter" data-level="4.5.5" data-path="c04-distributions.html"><a href="c04-distributions.html#means-of-continuous-variables"><i class="fa fa-check"></i><b>4.5.5</b> Means of continuous variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="c04-distributions.html"><a href="c04-distributions.html#quantiles-and-medians"><i class="fa fa-check"></i><b>4.6</b> Quantiles and medians</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="c04-distributions.html"><a href="c04-distributions.html#calling-the-functions-2"><i class="fa fa-check"></i><b>4.6.1</b> Calling the functions</a></li>
+<li class="chapter" data-level="4.6.2" data-path="c04-distributions.html"><a href="c04-distributions.html#quartiles-of-the-mathematics-score"><i class="fa fa-check"></i><b>4.6.2</b> Quartiles of the mathematics score</a></li>
+<li class="chapter" data-level="4.6.3" data-path="c04-distributions.html"><a href="c04-distributions.html#where-quantiles-earn-their-keep"><i class="fa fa-check"></i><b>4.6.3</b> Where quantiles earn their keep</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="c04-distributions.html"><a href="c04-distributions.html#ratios"><i class="fa fa-check"></i><b>4.7</b> Ratios</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="c04-distributions.html"><a href="c04-distributions.html#calling-the-function-1"><i class="fa fa-check"></i><b>4.7.1</b> Calling the function</a></li>
+<li class="chapter" data-level="4.7.2" data-path="c04-distributions.html"><a href="c04-distributions.html#how-much-longer-is-the-numeracy-assessment-than-the-reading-one"><i class="fa fa-check"></i><b>4.7.2</b> How much longer is the numeracy assessment than the reading one?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="c04-distributions.html"><a href="c04-distributions.html#correlation"><i class="fa fa-check"></i><b>4.8</b> Correlation</a>
+<ul>
+<li class="chapter" data-level="4.8.1" data-path="c04-distributions.html"><a href="c04-distributions.html#calling-the-function-2"><i class="fa fa-check"></i><b>4.8.1</b> Calling the function</a></li>
+<li class="chapter" data-level="4.8.2" data-path="c04-distributions.html"><a href="c04-distributions.html#do-reading-and-numeracy-travel-together"><i class="fa fa-check"></i><b>4.8.2</b> Do reading and numeracy travel together?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.9" data-path="c04-distributions.html"><a href="c04-distributions.html#variance-and-standard-deviation"><i class="fa fa-check"></i><b>4.9</b> Variance and standard deviation</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="c04-distributions.html"><a href="c04-distributions.html#calling-the-functions-3"><i class="fa fa-check"></i><b>4.9.1</b> Calling the functions</a></li>
+<li class="chapter" data-level="4.9.2" data-path="c04-distributions.html"><a href="c04-distributions.html#how-unequal-are-learning-outcomes"><i class="fa fa-check"></i><b>4.9.2</b> How unequal are learning outcomes?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.10" data-path="c04-distributions.html"><a href="c04-distributions.html#rounding-out-the-toolkit"><i class="fa fa-check"></i><b>4.10</b> Rounding out the toolkit</a>
+<ul>
+<li class="chapter" data-level="4.10.1" data-path="c04-distributions.html"><a href="c04-distributions.html#comparing-weighted-and-unweighted-results"><i class="fa fa-check"></i><b>4.10.1</b> Comparing weighted and unweighted results</a></li>
+<li class="chapter" data-level="4.10.2" data-path="c04-distributions.html"><a href="c04-distributions.html#restricting-to-a-subpopulation"><i class="fa fa-check"></i><b>4.10.2</b> Restricting to a subpopulation</a></li>
+<li class="chapter" data-level="4.10.3" data-path="c04-distributions.html"><a href="c04-distributions.html#dist-deff"><i class="fa fa-check"></i><b>4.10.3</b> Design effects and effective sample size</a></li>
+<li class="chapter" data-level="4.10.4" data-path="c04-distributions.html"><a href="c04-distributions.html#adding-summary-rows-with-cascade"><i class="fa fa-check"></i><b>4.10.4</b> Adding summary rows with <code>cascade()</code></a></li>
+<li class="chapter" data-level="4.10.5" data-path="c04-distributions.html"><a href="c04-distributions.html#estimating-several-outcomes-at-once"><i class="fa fa-check"></i><b>4.10.5</b> Estimating several outcomes at once</a></li>
+</ul></li>
+<li class="chapter" data-level="4.11" data-path="c04-distributions.html"><a href="c04-distributions.html#exercises"><i class="fa fa-check"></i><b>4.11</b> Exercises</a></li>
+<li class="chapter" data-level="4.12" data-path="c04-distributions.html"><a href="c04-distributions.html#further-reading"><i class="fa fa-check"></i><b>4.12</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="c05-modeling.html"><a href="c05-modeling.html"><i class="fa fa-check"></i><b>5</b> Modelling Learning Outcomes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="c05-modeling.html"><a href="c05-modeling.html#simple-linear-regression"><i class="fa fa-check"></i><b>5.1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="c05-modeling.html"><a href="c05-modeling.html#preparing-variables-for-analysis"><i class="fa fa-check"></i><b>5.1.1</b> Preparing variables for analysis</a></li>
+<li class="chapter" data-level="5.1.2" data-path="c05-modeling.html"><a href="c05-modeling.html#correlation-and-simple-regression"><i class="fa fa-check"></i><b>5.1.2</b> Correlation and simple regression</a></li>
+<li class="chapter" data-level="5.1.3" data-path="c05-modeling.html"><a href="c05-modeling.html#survey-weighted-regression-for-population-inference"><i class="fa fa-check"></i><b>5.1.3</b> Survey-weighted regression for population inference</a></li>
+<li class="chapter" data-level="5.1.4" data-path="c05-modeling.html"><a href="c05-modeling.html#practice-exercises"><i class="fa fa-check"></i><b>5.1.4</b> Practice exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="c05-modeling.html"><a href="c05-modeling.html#multiple-linear-regression"><i class="fa fa-check"></i><b>5.2</b> Multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="c05-modeling.html"><a href="c05-modeling.html#the-multiple-regression-model-and-its-interpretation"><i class="fa fa-check"></i><b>5.2.1</b> The multiple regression model and its interpretation</a></li>
+<li class="chapter" data-level="5.2.2" data-path="c05-modeling.html"><a href="c05-modeling.html#data-and-analysis-sample"><i class="fa fa-check"></i><b>5.2.2</b> Data and analysis sample</a></li>
+<li class="chapter" data-level="5.2.3" data-path="c05-modeling.html"><a href="c05-modeling.html#building-a-multiple-regression-model"><i class="fa fa-check"></i><b>5.2.3</b> Building a multiple regression model</a></li>
+<li class="chapter" data-level="5.2.4" data-path="c05-modeling.html"><a href="c05-modeling.html#extensions-interactions-and-non-linear-effects"><i class="fa fa-check"></i><b>5.2.4</b> Extensions: interactions and non-linear effects</a></li>
+<li class="chapter" data-level="5.2.5" data-path="c05-modeling.html"><a href="c05-modeling.html#reporting-results"><i class="fa fa-check"></i><b>5.2.5</b> Reporting results</a></li>
+<li class="chapter" data-level="5.2.6" data-path="c05-modeling.html"><a href="c05-modeling.html#practice-exercises-1"><i class="fa fa-check"></i><b>5.2.6</b> Practice exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="c05-modeling.html"><a href="c05-modeling.html#logistic-regression"><i class="fa fa-check"></i><b>5.3</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="c05-modeling.html"><a href="c05-modeling.html#what-logistic-regression-models"><i class="fa fa-check"></i><b>5.3.1</b> What logistic regression models</a></li>
+<li class="chapter" data-level="5.3.2" data-path="c05-modeling.html"><a href="c05-modeling.html#simple-versus-multiple-logistic-regression"><i class="fa fa-check"></i><b>5.3.2</b> Simple versus multiple logistic regression</a></li>
+<li class="chapter" data-level="5.3.3" data-path="c05-modeling.html"><a href="c05-modeling.html#data"><i class="fa fa-check"></i><b>5.3.3</b> Data</a></li>
+<li class="chapter" data-level="5.3.4" data-path="c05-modeling.html"><a href="c05-modeling.html#simple-logistic-regression"><i class="fa fa-check"></i><b>5.3.4</b> Simple Logistic Regression</a></li>
+<li class="chapter" data-level="5.3.5" data-path="c05-modeling.html"><a href="c05-modeling.html#multiple-binary-logistic-regression"><i class="fa fa-check"></i><b>5.3.5</b> Multiple binary logistic regression</a></li>
+<li class="chapter" data-level="5.3.6" data-path="c05-modeling.html"><a href="c05-modeling.html#interaction"><i class="fa fa-check"></i><b>5.3.6</b> Interaction</a></li>
+<li class="chapter" data-level="5.3.7" data-path="c05-modeling.html"><a href="c05-modeling.html#reporting-results-1"><i class="fa fa-check"></i><b>5.3.7</b> Reporting Results</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">ICAN-ICAR Analysis Guide</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="c04-distributions" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number"> 4</span> Understanding Distributions<a href="c04-distributions.html#c04-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="prereq6" class="section level3 unnumbered hasAnchor prereqbox-header">
+<h3>Prerequisites<a href="c04-distributions.html#prereq6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div class="prereqbox">
+<p>This chapter uses {tidyverse} for data manipulation, {srvyr} for survey estimation, {broom} for tidying model-style output, and {scales} for formatting large numbers and percentages in the text.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="c04-distributions.html#cb59-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb59-2"><a href="c04-distributions.html#cb59-2" tabindex="-1"></a><span class="fu">library</span>(srvyr)</span>
+<span id="cb59-3"><a href="c04-distributions.html#cb59-3" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb59-4"><a href="c04-distributions.html#cb59-4" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code></pre></div>
+<p>Every estimate in this chapter comes from the ICAN-ICAR 2025 design object built in Chapter <a href="#c05-setting-up"><strong>??</strong></a>. The chunk below reads the data, adds a handful of labelled variables that make the output easier to read, and rebuilds the design object. Documentation for the survey is in the <a href="https://www.datafirst.uct.ac.za/dataportal/index.php/catalog/1132">DataFirst metadata record</a>.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="c04-distributions.html#cb60-1" tabindex="-1"></a><span class="fu">options</span>(</span>
+<span id="cb60-2"><a href="c04-distributions.html#cb60-2" tabindex="-1"></a>  <span class="at">survey.lonely.psu =</span> <span class="st">&quot;adjust&quot;</span>,</span>
+<span id="cb60-3"><a href="c04-distributions.html#cb60-3" tabindex="-1"></a>  <span class="at">survey.adjust.domain.lonely =</span> <span class="cn">TRUE</span></span>
+<span id="cb60-4"><a href="c04-distributions.html#cb60-4" tabindex="-1"></a>)</span>
+<span id="cb60-5"><a href="c04-distributions.html#cb60-5" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="c04-distributions.html#cb60-6" tabindex="-1"></a>icanicar_2025 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/ican-icar-2025-v1.csv&quot;</span>)</span>
+<span id="cb60-7"><a href="c04-distributions.html#cb60-7" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="c04-distributions.html#cb60-8" tabindex="-1"></a>icanicar_des <span class="ot">&lt;-</span> icanicar_2025 <span class="sc">|&gt;</span></span>
+<span id="cb60-9"><a href="c04-distributions.html#cb60-9" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb60-10"><a href="c04-distributions.html#cb60-10" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">factor</span>(ch03, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Male&quot;</span>)),</span>
+<span id="cb60-11"><a href="c04-distributions.html#cb60-11" tabindex="-1"></a>    <span class="at">residence =</span> <span class="fu">factor</span>(<span class="fu">str_trim</span>(Location), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Rural&quot;</span>, <span class="st">&quot;Urban&quot;</span>)),</span>
+<span id="cb60-12"><a href="c04-distributions.html#cb60-12" tabindex="-1"></a>    <span class="at">schooling =</span> <span class="fu">factor</span>(</span>
+<span id="cb60-13"><a href="c04-distributions.html#cb60-13" tabindex="-1"></a>      EnrolmentStatus,</span>
+<span id="cb60-14"><a href="c04-distributions.html#cb60-14" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Currently Enrolled&quot;</span>, <span class="st">&quot;Out of School&quot;</span>, <span class="st">&quot;Never Enrolled&quot;</span>)</span>
+<span id="cb60-15"><a href="c04-distributions.html#cb60-15" tabindex="-1"></a>    ),</span>
+<span id="cb60-16"><a href="c04-distributions.html#cb60-16" tabindex="-1"></a>    <span class="at">mpl_math =</span> <span class="fu">factor</span>(</span>
+<span id="cb60-17"><a href="c04-distributions.html#cb60-17" tabindex="-1"></a>      MPLMath,</span>
+<span id="cb60-18"><a href="c04-distributions.html#cb60-18" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb60-19"><a href="c04-distributions.html#cb60-19" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Below MPL&quot;</span>, <span class="st">&quot;At or above MPL&quot;</span>)</span>
+<span id="cb60-20"><a href="c04-distributions.html#cb60-20" tabindex="-1"></a>    ),</span>
+<span id="cb60-21"><a href="c04-distributions.html#cb60-21" tabindex="-1"></a>    <span class="at">mpl_reading =</span> <span class="fu">factor</span>(</span>
+<span id="cb60-22"><a href="c04-distributions.html#cb60-22" tabindex="-1"></a>      MPLReading,</span>
+<span id="cb60-23"><a href="c04-distributions.html#cb60-23" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb60-24"><a href="c04-distributions.html#cb60-24" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Below MPL&quot;</span>, <span class="st">&quot;At or above MPL&quot;</span>)</span>
+<span id="cb60-25"><a href="c04-distributions.html#cb60-25" tabindex="-1"></a>    ),</span>
+<span id="cb60-26"><a href="c04-distributions.html#cb60-26" tabindex="-1"></a>    <span class="at">psu =</span> <span class="fu">interaction</span>(CountryName, VillageID, <span class="at">drop =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb60-27"><a href="c04-distributions.html#cb60-27" tabindex="-1"></a>    <span class="at">stratum =</span> <span class="fu">interaction</span>(CountryName, TierOneUnit, <span class="at">drop =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb60-28"><a href="c04-distributions.html#cb60-28" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb60-29"><a href="c04-distributions.html#cb60-29" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(</span>
+<span id="cb60-30"><a href="c04-distributions.html#cb60-30" tabindex="-1"></a>    <span class="at">ids =</span> <span class="fu">c</span>(psu, HHID),</span>
+<span id="cb60-31"><a href="c04-distributions.html#cb60-31" tabindex="-1"></a>    <span class="at">strata =</span> stratum,</span>
+<span id="cb60-32"><a href="c04-distributions.html#cb60-32" tabindex="-1"></a>    <span class="at">weights =</span> HHWeightProvided,</span>
+<span id="cb60-33"><a href="c04-distributions.html#cb60-33" tabindex="-1"></a>    <span class="at">nest =</span> <span class="cn">TRUE</span></span>
+<span id="cb60-34"><a href="c04-distributions.html#cb60-34" tabindex="-1"></a>  )</span></code></pre></div>
+</div>
+<div id="from-a-sample-of-children-to-a-population-of-learners" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> From a sample of children to a population of learners<a href="c04-distributions.html#from-a-sample-of-children-to-a-population-of-learners" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The ICAN-ICAR 2025 file holds one row per assessed child: 96,452 children in 11 countries. Those children were not picked one at a time from a national list. They were reached through sampled enumeration areas and sampled households, so some children stand in for far more of their peers than others. This is why a plain <code>count()</code> and a survey-weighted count answer different questions. The first describes who was interviewed; the second describes the population of children those interviews represent.</p>
+<p>Descriptive analysis is where that distinction becomes visible for the first time, and it is where most survey analysis begins and ends. Before fitting any model we usually want to know how many children are out of school, what share of them can read a short story or handle two-digit subtraction, how learning outcomes are spread within a country, and whether the gap between rural and urban children is large enough to take seriously. Each of those questions is a statement about a distribution, and each needs a point estimate together with an honest measure of uncertainty.</p>
+<div id="matching-statistics-to-the-type-of-variable" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Matching statistics to the type of variable<a href="c04-distributions.html#matching-statistics-to-the-type-of-variable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Which summary is appropriate depends on the variable. Any variable in the data is made up of two or more categories or attributes. A child’s sex has the categories female and male; the language of assessment has categories such as Swahili, Bangla, and Wolof.</p>
+<p>The level of measurement of a variable describes how its categories relate to one another. Three questions settle the level of measurement: are the categories distinct; can they be placed in a meaningful rank order; and are the intervals between them numerically meaningful? Working through those questions gives four types of variable, all four of which appear in ICAN-ICAR 2025:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Categorical (nominal)</strong> variables have categories that cannot be ranked: <code>CountryName</code>, <code>AssessmentLanguage</code>, <code>Location</code>, and the derived <code>sex</code> variable. Summarise these with counts and proportions.</li>
+<li><strong>Ordinal</strong> variables can be ranked but the gaps between categories have no fixed size. The functional difficulty items such as <code>ch04a</code>, which runs from no difficulty to cannot do at all, are ordinal. Counts, proportions, and medians are appropriate; means are usually not.</li>
+<li><strong>Discrete</strong> variables are counted in whole units: household size (<code>hh06a</code>), the child’s age in completed years (<code>ch02</code>), and the number of correct items on an assessment.</li>
+<li><strong>Continuous</strong> variables can take any value on an interval: the mathematics and reading ability scores (<code>MathIRTScore</code>, <code>ReadingIRTScore</code>) and the time each assessment took (<code>IcanAssessTime</code>, <code>IcarAssessTime</code>). Means, quantiles, and measures of spread all apply.</li>
+</ol>
+<p>Proficiency indicators such as <code>MPLMath</code>, <code>MPLReading</code>, and <code>MPLBoth</code> sit in a convenient middle ground. They are categorical, coded 0 and 1, so the mean of the indicator is the proportion of children reaching the minimum proficiency level. That equivalence is used repeatedly below.</p>
+</div>
+<div id="what-this-chapter-covers" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> What this chapter covers<a href="c04-distributions.html#what-this-chapter-covers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>All the estimators used here come from {srvyr}, which wraps the {survey} package in {dplyr} syntax so that survey estimation looks like ordinary data manipulation. They fall into four families:</p>
+<ul>
+<li><strong>Distribution.</strong> How often something occurs, and how much of it there is in total: <code>survey_count()</code>, <code>survey_tally()</code>, and <code>survey_total()</code>.</li>
+<li><strong>Central tendency.</strong> Where the middle of a distribution sits: <code>survey_mean()</code>, <code>survey_prop()</code>, <code>survey_quantile()</code>, and <code>survey_median()</code>.</li>
+<li><strong>Relationship.</strong> How two variables move together: <code>survey_ratio()</code> and <code>survey_corr()</code>.</li>
+<li><strong>Dispersion.</strong> How widely values are spread: <code>survey_var()</code> and <code>survey_sd()</code>.</li>
+</ul>
+<p>The workflow from Chapter <a href="#c05-setting-up"><strong>??</strong></a> applies to all of them:</p>
+<ol style="list-style-type: decimal">
+<li>Build a <code>tbl_svy</code> object with <code>as_survey_design()</code>.</li>
+<li>Restrict to a subpopulation with <code>filter()</code>, if needed.</li>
+<li>Define domains of analysis with <code>group_by()</code>, if needed.</li>
+<li>Call the estimator inside <code>summarize()</code>.</li>
+</ol>
+<p>Steps 2 and 3 must come <em>after</em> step 1. Filtering or grouping the raw data frame before the design is built hides part of the sample from the variance calculation, and the standard errors that come out the other side will be wrong. Working from <code>icanicar_des</code> rather than <code>icanicar_2025</code> is the safeguard.</p>
+</div>
+<div id="missing-values-are-not-spread-evenly" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Missing values are not spread evenly<a href="c04-distributions.html#missing-values-are-not-spread-evenly" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One more thing to check before estimating anything. The assessment outcomes are not observed for every child:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="c04-distributions.html#cb61-1" tabindex="-1"></a>icanicar_2025 <span class="sc">|&gt;</span></span>
+<span id="cb61-2"><a href="c04-distributions.html#cb61-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(</span>
+<span id="cb61-3"><a href="c04-distributions.html#cb61-3" tabindex="-1"></a>    <span class="fu">c</span>(MathIRTScore, ReadingIRTScore, MPLMath, MPLBoth, IcanAssessTime),</span>
+<span id="cb61-4"><a href="c04-distributions.html#cb61-4" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.x))</span>
+<span id="cb61-5"><a href="c04-distributions.html#cb61-5" tabindex="-1"></a>  ))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 5
+##   MathIRTScore ReadingIRTScore MPLMath MPLBoth IcanAssessTime
+##          &lt;int&gt;           &lt;int&gt;   &lt;int&gt;   &lt;int&gt;          &lt;int&gt;
+## 1         7314            7314    7314    7314          18215</code></pre>
+<p>In total, 7,314 children have no proficiency classification, and more than twice that many have no recorded ICAN timing. Survey functions in {srvyr} refuse to guess what to do about this: <code>na.rm</code> defaults to <code>FALSE</code>, so an unguarded call returns <code>NA</code>. Setting <code>na.rm = TRUE</code> drops the missing cases and quietly changes the denominator to “children with a valid assessment”. That is usually what we want, but it is a substantive choice rather than a technical one, so this chapter states it every time. Chapter <a href="#c05-setting-up"><strong>??</strong></a> points to the survey documentation on why assessments are missing.</p>
+</div>
+</div>
+<div id="counting-children-and-cross-tabulating" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Counting children and cross-tabulating<a href="c04-distributions.html#counting-children-and-cross-tabulating" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>survey_count()</code> estimates how many members of the population fall into a category, or into each combination of several categories. The cross-tabulations it produces are the natural first summary of any categorical variable. <code>survey_tally()</code> does the same job for data that have already been grouped.</p>
+<div id="calling-the-functions" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Calling the functions<a href="c04-distributions.html#calling-the-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>survey_count()</code> mirrors <code>dplyr::count()</code>, with extra arguments controlling the uncertainty estimate:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="c04-distributions.html#cb63-1" tabindex="-1"></a><span class="fu">survey_count</span>(</span>
+<span id="cb63-2"><a href="c04-distributions.html#cb63-2" tabindex="-1"></a>  x,</span>
+<span id="cb63-3"><a href="c04-distributions.html#cb63-3" tabindex="-1"></a>  ...,</span>
+<span id="cb63-4"><a href="c04-distributions.html#cb63-4" tabindex="-1"></a>  <span class="at">wt =</span> <span class="cn">NULL</span>,</span>
+<span id="cb63-5"><a href="c04-distributions.html#cb63-5" tabindex="-1"></a>  <span class="at">sort =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb63-6"><a href="c04-distributions.html#cb63-6" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;n&quot;</span>,</span>
+<span id="cb63-7"><a href="c04-distributions.html#cb63-7" tabindex="-1"></a>  <span class="at">.drop =</span> dplyr<span class="sc">::</span><span class="fu">group_by_drop_default</span>(x),</span>
+<span id="cb63-8"><a href="c04-distributions.html#cb63-8" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>)</span>
+<span id="cb63-9"><a href="c04-distributions.html#cb63-9" tabindex="-1"></a>)</span></code></pre></div>
+<p>Reading the arguments in turn: <code>x</code> is the design object; <code>...</code> takes the variables to tabulate, exactly as <code>count()</code> would; <code>wt</code> supplies a second weight to apply on top of the survey weights, which we rarely need because the design object already carries them; <code>sort</code> orders the output by size; <code>name</code> sets the column name for the estimate, <code>n</code> by default; <code>.drop</code> controls whether empty combinations disappear from the output; and <code>vartype</code> chooses which uncertainty measures to return. The full argument documentation is in <code>?survey_count</code>.</p>
+<p><code>survey_tally()</code> takes the same arguments except <code>...</code> and <code>.drop</code>, because the grouping has already been done by <code>group_by()</code>:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="c04-distributions.html#cb64-1" tabindex="-1"></a><span class="fu">survey_tally</span>(</span>
+<span id="cb64-2"><a href="c04-distributions.html#cb64-2" tabindex="-1"></a>  x,</span>
+<span id="cb64-3"><a href="c04-distributions.html#cb64-3" tabindex="-1"></a>  wt,</span>
+<span id="cb64-4"><a href="c04-distributions.html#cb64-4" tabindex="-1"></a>  <span class="at">sort =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb64-5"><a href="c04-distributions.html#cb64-5" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;n&quot;</span>,</span>
+<span id="cb64-6"><a href="c04-distributions.html#cb64-6" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>)</span>
+<span id="cb64-7"><a href="c04-distributions.html#cb64-7" tabindex="-1"></a>)</span></code></pre></div>
+<p>The <code>vartype</code> argument appears in nearly every function in this chapter, so it is worth settling now. It accepts any combination of four values, and each one adds columns named after the estimate:</p>
+<ul>
+<li><code>"se"</code> (the default) returns the standard error, suffixed <code>_se</code>. It measures how much the estimate would move around if the survey were repeated, and it is the usual currency for judging precision.</li>
+<li><code>"ci"</code> returns the bounds of a confidence interval, suffixed <code>_low</code> and <code>_upp</code>. The default level is 95%, changed through the <code>level</code> argument, so <code>level = 0.9</code> gives a 90% interval.</li>
+<li><code>"var"</code> returns the variance of the estimate, suffixed <code>_var</code>. It is the square of the standard error.</li>
+<li><code>"cv"</code> returns the coefficient of variation, suffixed <code>_cv</code>, which is the standard error divided by the estimate. Because it is relative, it is the easiest way to spot estimates that are too imprecise to publish.</li>
+</ul>
+<p>Unless a function documents otherwise, confidence intervals are symmetric and based on the t-distribution:</p>
+<p><span class="math display">\[\text{estimate} \pm t^*_{df} \times SE\]</span></p>
+<p>The degrees of freedom come from the design rather than the number of children. For a stratified cluster design they are the number of first-stage clusters minus the number of strata, which {survey} reports directly:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="c04-distributions.html#cb65-1" tabindex="-1"></a>survey<span class="sc">::</span><span class="fu">degf</span>(icanicar_des)</span></code></pre></div>
+<pre><code>## [1] 2654</code></pre>
+<p>ICAN-ICAR 2025 has 2,927 sampled enumeration areas spread over 273 country-by-region strata, leaving 2,654 degrees of freedom. That is comfortably large, so t-based intervals here are almost identical to normal-based ones. In smaller designs, or in analyses restricted to one country, the difference matters and the <code>df</code> argument lets us override the default.</p>
+</div>
+<div id="how-many-children-does-the-sample-represent" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> How many children does the sample represent?<a href="c04-distributions.html#how-many-children-does-the-sample-represent" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Called with no variables, <code>survey_count()</code> estimates the size of the whole population of interest:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="c04-distributions.html#cb67-1" tabindex="-1"></a>children_total <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb67-2"><a href="c04-distributions.html#cb67-2" tabindex="-1"></a>  <span class="fu">survey_count</span>(<span class="at">name =</span> <span class="st">&quot;children&quot;</span>)</span>
+<span id="cb67-3"><a href="c04-distributions.html#cb67-3" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="c04-distributions.html#cb67-4" tabindex="-1"></a>children_total</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##     children children_se
+##        &lt;dbl&gt;       &lt;dbl&gt;
+## 1 299559314.    4148332.</code></pre>
+<p>The 96,452 children in the file represent an estimated 299.6 million children across the eleven participating countries, with a standard error of 4.1 million. Two things are worth noticing. First, the estimate is enormous compared with the sample, which is exactly what weights are for. Second, this is a count of <em>children in the age range the survey targets</em>, because the household weight attaches to every child assessed in that household. It is not a count of households, and it is not a count of all children of all ages.</p>
+<p>Estimates like this deserve a plausibility check against an external source before they go anywhere near a report. If a weighted count is wildly out of line with the national population of school-age children, the likely explanation is a weighting or subsetting mistake rather than a surprising finding.</p>
+</div>
+<div id="cross-tabulating-by-country-and-location" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Cross-tabulating by country and location<a href="c04-distributions.html#cross-tabulating-by-country-and-location" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Passing variables to <code>survey_count()</code> breaks the estimate down by every combination of them. Here the estimated number of children is split by country and by rural or urban residence, with confidence intervals instead of standard errors and the count column renamed:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="c04-distributions.html#cb69-1" tabindex="-1"></a>children_by_area <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb69-2"><a href="c04-distributions.html#cb69-2" tabindex="-1"></a>  <span class="fu">survey_count</span>(CountryName, residence, <span class="at">name =</span> <span class="st">&quot;children&quot;</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>)</span>
+<span id="cb69-3"><a href="c04-distributions.html#cb69-3" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="c04-distributions.html#cb69-4" tabindex="-1"></a>children_by_area</span></code></pre></div>
+<pre><code>## # A tibble: 22 × 5
+##    CountryName residence  children children_low children_upp
+##    &lt;chr&gt;       &lt;fct&gt;         &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+##  1 Bangladesh  Rural     33014359.    29419564.    36609154.
+##  2 Bangladesh  Urban     18025058.    13614137.    22435979.
+##  3 Kenya       Rural      9848127.     8015413.    11680840.
+##  4 Kenya       Urban     10714954.     9014203.    12415705.
+##  5 Mali        Rural      2797936.     2516464.     3079408.
+##  6 Mali        Urban      1382335.     1204288.     1560382.
+##  7 Mexico      Rural     23754324.    19836439.    27672210.
+##  8 Mexico      Urban     33583260.    29475964.    37690555.
+##  9 Mozambique  Rural      6697553.     5907171.     7487934.
+## 10 Mozambique  Urban      3877823.     3079991.     4675655.
+## # ℹ 12 more rows</code></pre>
+<p>The table has one row per country and residence combination. In Tanzania, for example, an estimated 17.4 million children live in rural areas and 12.6 million in urban areas. Running this code interactively also produces a stack of warnings about strata containing a single primary sampling unit; the next section explains what they mean and why the chapter suppresses them.</p>
+<p><code>survey_tally()</code> reaches the same answer from a grouped design:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="c04-distributions.html#cb71-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb71-2"><a href="c04-distributions.html#cb71-2" tabindex="-1"></a>  <span class="fu">group_by</span>(residence) <span class="sc">|&gt;</span></span>
+<span id="cb71-3"><a href="c04-distributions.html#cb71-3" tabindex="-1"></a>  <span class="fu">survey_tally</span>(<span class="at">name =</span> <span class="st">&quot;children&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 3
+##   residence   children children_se
+##   &lt;fct&gt;          &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Rural     166999837.    4655677.
+## 2 Urban     132559478.    4503887.</code></pre>
+<p>The two functions are not interchangeable, though. Handing a variable to <code>survey_tally()</code> fails, because it tries to sum that variable rather than group by it:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="c04-distributions.html#cb73-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb73-2"><a href="c04-distributions.html#cb73-2" tabindex="-1"></a>  <span class="fu">survey_tally</span>(CountryName)</span></code></pre></div>
+<pre><code>## Error in `dplyr::summarise()`:
+## ℹ In argument: `n = survey_total(CountryName, vartype = vartype, na.rm = TRUE)`.
+## Caused by error:
+## ! Character vectors not allowed in survey functions, should be used as a grouping variable.</code></pre>
+<p>The error message is a useful reminder of the division of labour: variables named inside <code>survey_count()</code> are grouping variables, whereas anything passed to a <code>survey_*()</code> estimator is treated as a quantity to be summed or averaged.</p>
+</div>
+</div>
+<div id="when-a-stratum-contains-only-one-village" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> When a stratum contains only one village<a href="c04-distributions.html#when-a-stratum-contains-only-one-village" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The warnings above are specific to this dataset and worth understanding rather than ignoring. Variance estimation for a stratified design works by comparing clusters <em>within</em> each stratum. A stratum that contains a single sampled enumeration area offers nothing to compare, so its contribution to the variance is undefined. A number of strata in ICAN-ICAR 2025 are in exactly that position:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="c04-distributions.html#cb75-1" tabindex="-1"></a>lonely_strata <span class="ot">&lt;-</span> icanicar_2025 <span class="sc">|&gt;</span></span>
+<span id="cb75-2"><a href="c04-distributions.html#cb75-2" tabindex="-1"></a>  <span class="fu">distinct</span>(CountryName, TierOneUnit, VillageID) <span class="sc">|&gt;</span></span>
+<span id="cb75-3"><a href="c04-distributions.html#cb75-3" tabindex="-1"></a>  <span class="fu">count</span>(CountryName, TierOneUnit, <span class="at">name =</span> <span class="st">&quot;villages&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb75-4"><a href="c04-distributions.html#cb75-4" tabindex="-1"></a>  <span class="fu">filter</span>(villages <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb75-5"><a href="c04-distributions.html#cb75-5" tabindex="-1"></a></span>
+<span id="cb75-6"><a href="c04-distributions.html#cb75-6" tabindex="-1"></a>lonely_strata</span></code></pre></div>
+<pre><code>## # A tibble: 63 × 3
+##    CountryName TierOneUnit villages
+##    &lt;chr&gt;       &lt;chr&gt;          &lt;int&gt;
+##  1 Mozambique  c120               1
+##  2 Nepal       c000               1
+##  3 Tanzania    c000               1
+##  4 Uganda      c106               1
+##  5 Uganda      c107               1
+##  6 Uganda      c110               1
+##  7 Uganda      c113               1
+##  8 Uganda      c114               1
+##  9 Uganda      c115               1
+## 10 Uganda      c117               1
+## # ℹ 53 more rows</code></pre>
+<p>There are 63 such strata, spread across 4 countries. Left alone, {survey} raises an error when an estimate touches one of them. The setup chunk therefore sets</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="c04-distributions.html#cb77-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">survey.lonely.psu =</span> <span class="st">&quot;adjust&quot;</span>)</span></code></pre></div>
+<p>which centres those strata at the overall population mean instead of dropping them, giving a conservative (slightly larger) variance rather than no variance at all. The companion option <code>survey.adjust.domain.lonely = TRUE</code> applies the same treatment when a <code>group_by()</code> or <code>filter()</code> leaves a stratum with one cluster in a particular domain, which happens often once estimates are broken down by country and residence together.</p>
+<p>Two habits follow from this. Set both options once, near the top of the analysis, so that every estimate is computed the same way. And treat a long list of lonely-stratum warnings as a signal to check whether the domain being estimated is too fine for the design to support, because a conservative variance is still a poor substitute for an adequate sample.</p>
+</div>
+<div id="adding-things-up" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Adding things up<a href="c04-distributions.html#adding-things-up" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>survey_total()</code> is the survey counterpart of <code>sum()</code>. Applied to a continuous or count variable, it estimates the population total of that quantity. Applied to a 0/1 indicator, it estimates the number of population members for whom the indicator is 1. Unlike <code>survey_count()</code> and <code>survey_tally()</code>, it must be called inside <code>summarize()</code>.</p>
+<div id="calling-the-function" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Calling the function<a href="c04-distributions.html#calling-the-function" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="c04-distributions.html#cb78-1" tabindex="-1"></a><span class="fu">survey_total</span>(</span>
+<span id="cb78-2"><a href="c04-distributions.html#cb78-2" tabindex="-1"></a>  x,</span>
+<span id="cb78-3"><a href="c04-distributions.html#cb78-3" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb78-4"><a href="c04-distributions.html#cb78-4" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb78-5"><a href="c04-distributions.html#cb78-5" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb78-6"><a href="c04-distributions.html#cb78-6" tabindex="-1"></a>  <span class="at">deff =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb78-7"><a href="c04-distributions.html#cb78-7" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb78-8"><a href="c04-distributions.html#cb78-8" tabindex="-1"></a>)</span></code></pre></div>
+<p><code>x</code> is the variable or expression to add up, and it can be left empty to get a population count. <code>na.rm</code> decides whether missing values are dropped. <code>vartype</code> and <code>level</code> behave as described above. <code>deff</code> adds the design effect to the output, discussed in the section on design effects. <code>df</code> overrides the degrees of freedom used for confidence intervals.</p>
+</div>
+<div id="how-many-children-reach-both-minimum-proficiency-levels" class="section level3 hasAnchor" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> How many children reach both minimum proficiency levels?<a href="c04-distributions.html#how-many-children-reach-both-minimum-proficiency-levels" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>MPLBoth</code> is coded 1 for children who reach the minimum proficiency level in both reading and mathematics. Totalling it estimates how many children in the population have done so:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="c04-distributions.html#cb79-1" tabindex="-1"></a>mpl_both_total <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb79-2"><a href="c04-distributions.html#cb79-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">children =</span> <span class="fu">survey_total</span>(</span>
+<span id="cb79-3"><a href="c04-distributions.html#cb79-3" tabindex="-1"></a>    MPLBoth,</span>
+<span id="cb79-4"><a href="c04-distributions.html#cb79-4" tabindex="-1"></a>    <span class="at">na.rm =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb79-5"><a href="c04-distributions.html#cb79-5" tabindex="-1"></a>    <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>)</span>
+<span id="cb79-6"><a href="c04-distributions.html#cb79-6" tabindex="-1"></a>  ))</span>
+<span id="cb79-7"><a href="c04-distributions.html#cb79-7" tabindex="-1"></a></span>
+<span id="cb79-8"><a href="c04-distributions.html#cb79-8" tabindex="-1"></a>mpl_both_total</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 4
+##    children children_se children_low children_upp
+##       &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1 95903033.    1861271.    92253344.    99552723.</code></pre>
+<p>An estimated 95.9 million children reach both thresholds, with a 95% confidence interval running from 92.3 million to 99.6 million. Set against the 299.6 million children the survey represents, this is the headline result of the whole exercise: only about one child in three clears both bars.</p>
+</div>
+<div id="totals-by-country" class="section level3 hasAnchor" number="4.4.3">
+<h3><span class="header-section-number">4.4.3</span> Totals by country<a href="c04-distributions.html#totals-by-country" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Grouping first gives the same total for each country. Confidence intervals are more informative than standard errors when the point estimates differ by orders of magnitude, and sorting makes the table easier to read:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="c04-distributions.html#cb81-1" tabindex="-1"></a>mpl_by_country <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb81-2"><a href="c04-distributions.html#cb81-2" tabindex="-1"></a>  <span class="fu">group_by</span>(CountryName) <span class="sc">|&gt;</span></span>
+<span id="cb81-3"><a href="c04-distributions.html#cb81-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">children =</span> <span class="fu">survey_total</span>(MPLBoth, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb81-4"><a href="c04-distributions.html#cb81-4" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(children))</span>
+<span id="cb81-5"><a href="c04-distributions.html#cb81-5" tabindex="-1"></a></span>
+<span id="cb81-6"><a href="c04-distributions.html#cb81-6" tabindex="-1"></a>mpl_by_country</span></code></pre></div>
+<pre><code>## # A tibble: 11 × 4
+##    CountryName  children children_low children_upp
+##    &lt;chr&gt;           &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+##  1 Mexico      29995006.    28134156.    31855856.
+##  2 Pakistan    22611627.    20041503.    25181751.
+##  3 Bangladesh  15350639.    13932137.    16769142.
+##  4 Tanzania     8397215.     7896388.     8898041.
+##  5 Kenya        8243830.     7490214.     8997446.
+##  6 Nepal        6408482.     5970729.     6846235.
+##  7 Uganda       2111516.     1860613.     2362420.
+##  8 Mozambique   1049926.      906103.     1193749.
+##  9 Senegal       923783.      831009.     1016557.
+## 10 Nicaragua     603788.      505058.      702518.
+## 11 Mali          207221.      173033.      241409.</code></pre>
+<p>These totals are driven as much by population size as by learning outcomes: a large country with mediocre proficiency contributes more children above the threshold than a small country doing well. Totals answer “how many”, which is what budgeting and planning need. To compare how <em>well</em> countries are doing, we need proportions, which is the next section.</p>
+</div>
+<div id="a-total-that-answers-no-question" class="section level3 hasAnchor" number="4.4.4">
+<h3><span class="header-section-number">4.4.4</span> A total that answers no question<a href="c04-distributions.html#a-total-that-answers-no-question" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Totals are easy to compute and easy to misuse. <code>hh06a</code> records household size, and every child assessed in a household carries the same value, so households with several assessed children appear several times:</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="c04-distributions.html#cb83-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb83-2"><a href="c04-distributions.html#cb83-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">members =</span> <span class="fu">survey_total</span>(hh06a))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##       members members_se
+##         &lt;dbl&gt;      &lt;dbl&gt;
+## 1 1810518465.  27342661.</code></pre>
+<p>The result runs into billions, which is far more people than live in the eleven countries combined. Nothing is wrong with the arithmetic; the problem is the unit of analysis. The design object is a sample of <em>children</em>, so summing a <em>household</em> attribute over children counts large households once for each child they contributed. Household-level totals need one row per household, which the chapter on central tendency and dispersion constructs before summarising household size.</p>
+<p>The general rule: before totalling a variable, ask which unit it describes, and check that this unit matches the rows of the design object.</p>
+</div>
+</div>
+<div id="proportions-and-means" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Proportions and means<a href="c04-distributions.html#proportions-and-means" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Proportions and means are the estimates most readers of a report will actually look at. <code>survey_prop()</code> is for categorical variables and <code>survey_mean()</code> for continuous ones, but the two overlap: applied to an indicator coded 0/1, or to a logical variable, <code>survey_mean()</code> returns a proportion.</p>
+<div id="calling-the-functions-1" class="section level3 hasAnchor" number="4.5.1">
+<h3><span class="header-section-number">4.5.1</span> Calling the functions<a href="c04-distributions.html#calling-the-functions-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="c04-distributions.html#cb85-1" tabindex="-1"></a><span class="fu">survey_mean</span>(</span>
+<span id="cb85-2"><a href="c04-distributions.html#cb85-2" tabindex="-1"></a>  x,</span>
+<span id="cb85-3"><a href="c04-distributions.html#cb85-3" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb85-4"><a href="c04-distributions.html#cb85-4" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb85-5"><a href="c04-distributions.html#cb85-5" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb85-6"><a href="c04-distributions.html#cb85-6" tabindex="-1"></a>  <span class="at">proportion =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb85-7"><a href="c04-distributions.html#cb85-7" tabindex="-1"></a>  <span class="at">prop_method =</span> <span class="fu">c</span>(<span class="st">&quot;logit&quot;</span>, <span class="st">&quot;likelihood&quot;</span>, <span class="st">&quot;asin&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;mean&quot;</span>),</span>
+<span id="cb85-8"><a href="c04-distributions.html#cb85-8" tabindex="-1"></a>  <span class="at">deff =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb85-9"><a href="c04-distributions.html#cb85-9" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb85-10"><a href="c04-distributions.html#cb85-10" tabindex="-1"></a>)</span>
+<span id="cb85-11"><a href="c04-distributions.html#cb85-11" tabindex="-1"></a></span>
+<span id="cb85-12"><a href="c04-distributions.html#cb85-12" tabindex="-1"></a><span class="fu">survey_prop</span>(</span>
+<span id="cb85-13"><a href="c04-distributions.html#cb85-13" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb85-14"><a href="c04-distributions.html#cb85-14" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb85-15"><a href="c04-distributions.html#cb85-15" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb85-16"><a href="c04-distributions.html#cb85-16" tabindex="-1"></a>  <span class="at">proportion =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb85-17"><a href="c04-distributions.html#cb85-17" tabindex="-1"></a>  <span class="at">prop_method =</span></span>
+<span id="cb85-18"><a href="c04-distributions.html#cb85-18" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">&quot;logit&quot;</span>, <span class="st">&quot;likelihood&quot;</span>, <span class="st">&quot;asin&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;xlogit&quot;</span>),</span>
+<span id="cb85-19"><a href="c04-distributions.html#cb85-19" tabindex="-1"></a>  <span class="at">deff =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb85-20"><a href="c04-distributions.html#cb85-20" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb85-21"><a href="c04-distributions.html#cb85-21" tabindex="-1"></a>)</span></code></pre></div>
+<p>The shared arguments (<code>na.rm</code>, <code>vartype</code>, <code>level</code>, <code>deff</code>, <code>df</code>) work as before. Two differences matter in practice.</p>
+<p>The first is where the variable goes. <code>survey_mean()</code> takes it as the argument <code>x</code>. <code>survey_prop()</code> has no such argument: the categories come from a preceding <code>group_by()</code>, and the function reports the share of the population in each. Adding <code>group_by()</code> before <code>survey_mean()</code> does something different — it splits the mean by domain.</p>
+<p>The second is the <code>proportion</code> argument, which controls how the confidence interval is built. Wald-type intervals of the form estimate plus or minus a multiple of the standard error can stray outside the range 0 to 1 and can have poor coverage when a proportion sits close to 0 or 1. Setting <code>proportion = TRUE</code>, which is the default in <code>survey_prop()</code>, switches to a method chosen by <code>prop_method</code>:</p>
+<ul>
+<li><code>"logit"</code> (the default) works on the log-odds scale, where an interval cannot run past 0 or 1, and converts the bounds back to proportions afterwards.</li>
+<li><code>"likelihood"</code> inverts a Rao-Scott scaled chi-squared test on the binomial log-likelihood.</li>
+<li><code>"asin"</code> builds the interval on the arcsine square-root scale, which holds the binomial variance roughly constant, then transforms back.</li>
+<li><code>"beta"</code> treats the estimate as binomial with an effective sample size implied by its variance, and reads the bounds from the beta distribution.</li>
+<li><code>"mean"</code> is the plain Wald interval, and is what <code>survey_mean()</code> gives when <code>proportion = FALSE</code>.</li>
+<li><code>"xlogit"</code> transforms the proportion with a logit, builds the interval, and transforms back; this is the default in SUDAAN and SPSS, and is the option to choose when results must line up with output from those packages.</li>
+</ul>
+</div>
+<div id="the-distribution-of-a-single-categorical-variable" class="section level3 hasAnchor" number="4.5.2">
+<h3><span class="header-section-number">4.5.2</span> The distribution of a single categorical variable<a href="c04-distributions.html#the-distribution-of-a-single-categorical-variable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>schooling</code> records whether a child is currently enrolled, has dropped out, or has never been to school. Grouping by it and calling <code>survey_prop()</code> estimates the share of children in each situation:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="c04-distributions.html#cb86-1" tabindex="-1"></a>schooling_p <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb86-2"><a href="c04-distributions.html#cb86-2" tabindex="-1"></a>  <span class="fu">group_by</span>(schooling) <span class="sc">|&gt;</span></span>
+<span id="cb86-3"><a href="c04-distributions.html#cb86-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>))</span>
+<span id="cb86-4"><a href="c04-distributions.html#cb86-4" tabindex="-1"></a></span>
+<span id="cb86-5"><a href="c04-distributions.html#cb86-5" tabindex="-1"></a>schooling_p</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 4
+##   schooling               p  p_low  p_upp
+##   &lt;fct&gt;               &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Currently Enrolled 0.924  0.918  0.929 
+## 2 Out of School      0.0246 0.0221 0.0274
+## 3 Never Enrolled     0.0519 0.0478 0.0563</code></pre>
+<p>An estimated 92.4% of children are enrolled, 5.2% have never enrolled, and 2.5% have left school. The proportions add to 1 because the three categories are exhaustive. The interval for the smallest category, 2.2% to 2.7%, is narrow in absolute terms but wide relative to the estimate itself, which is typical of rare outcomes.</p>
+<p>Because a proportion is the mean of a set of indicator variables, <code>survey_mean()</code> produces exactly the same numbers when the design is grouped and no variable is named:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="c04-distributions.html#cb88-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb88-2"><a href="c04-distributions.html#cb88-2" tabindex="-1"></a>  <span class="fu">group_by</span>(schooling) <span class="sc">|&gt;</span></span>
+<span id="cb88-3"><a href="c04-distributions.html#cb88-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_mean</span>(<span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 4
+##   schooling               p  p_low  p_upp
+##   &lt;fct&gt;               &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Currently Enrolled 0.924  0.918  0.929 
+## 2 Out of School      0.0246 0.0220 0.0273
+## 3 Never Enrolled     0.0519 0.0476 0.0561</code></pre>
+</div>
+<div id="conditional-and-joint-proportions" class="section level3 hasAnchor" number="4.5.3">
+<h3><span class="header-section-number">4.5.3</span> Conditional and joint proportions<a href="c04-distributions.html#conditional-and-joint-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Grouping by two variables changes the meaning of the estimate, and this is the single most common source of confusion in reporting cross-tabulations. With <code>group_by(residence, mpl_math)</code>, the proportions are <em>conditional</em>: they sum to 1 within each residence category, so they read as proficiency rates for rural and for urban children.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="c04-distributions.html#cb90-1" tabindex="-1"></a>mpl_by_residence <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb90-2"><a href="c04-distributions.html#cb90-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(mpl_math)) <span class="sc">|&gt;</span></span>
+<span id="cb90-3"><a href="c04-distributions.html#cb90-3" tabindex="-1"></a>  <span class="fu">group_by</span>(residence, mpl_math) <span class="sc">|&gt;</span></span>
+<span id="cb90-4"><a href="c04-distributions.html#cb90-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>))</span>
+<span id="cb90-5"><a href="c04-distributions.html#cb90-5" tabindex="-1"></a></span>
+<span id="cb90-6"><a href="c04-distributions.html#cb90-6" tabindex="-1"></a>mpl_by_residence</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 5
+## # Groups:   residence [2]
+##   residence mpl_math            p p_low p_upp
+##   &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Rural     Below MPL       0.536 0.522 0.550
+## 2 Rural     At or above MPL 0.464 0.450 0.478
+## 3 Urban     Below MPL       0.439 0.424 0.455
+## 4 Urban     At or above MPL 0.561 0.545 0.576</code></pre>
+<p>Read this way, 46.4% of rural children reach the mathematics threshold compared with 56.1% of urban children, a gap of 9.6 percentage points. The confidence intervals do not overlap, so the gap is larger than sampling error alone would explain. The chapter on bivariate analysis shows how to test such a difference formally.</p>
+<p>Wrapping the grouping variables in <code>interact()</code> instead gives <em>joint</em> proportions, which sum to 1 across the whole table:</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="c04-distributions.html#cb92-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb92-2"><a href="c04-distributions.html#cb92-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(mpl_math)) <span class="sc">|&gt;</span></span>
+<span id="cb92-3"><a href="c04-distributions.html#cb92-3" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="fu">interact</span>(residence, mpl_math)) <span class="sc">|&gt;</span></span>
+<span id="cb92-4"><a href="c04-distributions.html#cb92-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_prop</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 4
+##   residence mpl_math            p    p_se
+##   &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Rural     Below MPL       0.296 0.00777
+## 2 Rural     At or above MPL 0.257 0.00771
+## 3 Urban     Below MPL       0.197 0.00694
+## 4 Urban     At or above MPL 0.251 0.00819</code></pre>
+<p>Now each cell is a share of all children rather than of children in that residence category. The urban proficient cell, for instance, is the proportion of children in the population who are both urban and above the threshold, a quantity that depends on how urbanised these countries are as well as on how well urban children perform. Conditional proportions compare groups; joint proportions describe the composition of the population. Choose deliberately, and say in the text which one is being reported.</p>
+</div>
+<div id="when-the-choice-of-interval-method-matters" class="section level3 hasAnchor" number="4.5.4">
+<h3><span class="header-section-number">4.5.4</span> When the choice of interval method matters<a href="c04-distributions.html#when-the-choice-of-interval-method-matters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the estimates above, all six <code>prop_method</code> options return practically the same interval, because the effective sample is large and the proportions are not near a boundary. The methods separate when the estimate is small and the subpopulation is thin. Take the mathematics proficiency rate among five- and six-year-olds in Mali:</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="c04-distributions.html#cb94-1" tabindex="-1"></a>young_mali <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb94-2"><a href="c04-distributions.html#cb94-2" tabindex="-1"></a>  <span class="fu">filter</span>(CountryName <span class="sc">==</span> <span class="st">&quot;Mali&quot;</span>, ch02 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>), <span class="sc">!</span><span class="fu">is.na</span>(MPLMath))</span>
+<span id="cb94-3"><a href="c04-distributions.html#cb94-3" tabindex="-1"></a></span>
+<span id="cb94-4"><a href="c04-distributions.html#cb94-4" tabindex="-1"></a>prop_methods <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;logit&quot;</span>, <span class="st">&quot;likelihood&quot;</span>, <span class="st">&quot;asin&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;xlogit&quot;</span>)</span>
+<span id="cb94-5"><a href="c04-distributions.html#cb94-5" tabindex="-1"></a></span>
+<span id="cb94-6"><a href="c04-distributions.html#cb94-6" tabindex="-1"></a>interval_comparison <span class="ot">&lt;-</span> prop_methods <span class="sc">|&gt;</span></span>
+<span id="cb94-7"><a href="c04-distributions.html#cb94-7" tabindex="-1"></a>  <span class="fu">map</span>(\(method) {</span>
+<span id="cb94-8"><a href="c04-distributions.html#cb94-8" tabindex="-1"></a>    young_mali <span class="sc">|&gt;</span></span>
+<span id="cb94-9"><a href="c04-distributions.html#cb94-9" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_mean</span>(</span>
+<span id="cb94-10"><a href="c04-distributions.html#cb94-10" tabindex="-1"></a>        MPLMath,</span>
+<span id="cb94-11"><a href="c04-distributions.html#cb94-11" tabindex="-1"></a>        <span class="at">proportion =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb94-12"><a href="c04-distributions.html#cb94-12" tabindex="-1"></a>        <span class="at">prop_method =</span> method,</span>
+<span id="cb94-13"><a href="c04-distributions.html#cb94-13" tabindex="-1"></a>        <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span></span>
+<span id="cb94-14"><a href="c04-distributions.html#cb94-14" tabindex="-1"></a>      )) <span class="sc">|&gt;</span></span>
+<span id="cb94-15"><a href="c04-distributions.html#cb94-15" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">prop_method =</span> method)</span>
+<span id="cb94-16"><a href="c04-distributions.html#cb94-16" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb94-17"><a href="c04-distributions.html#cb94-17" tabindex="-1"></a>  <span class="fu">list_rbind</span>() <span class="sc">|&gt;</span></span>
+<span id="cb94-18"><a href="c04-distributions.html#cb94-18" tabindex="-1"></a>  <span class="fu">select</span>(prop_method, p, p_low, p_upp)</span>
+<span id="cb94-19"><a href="c04-distributions.html#cb94-19" tabindex="-1"></a></span>
+<span id="cb94-20"><a href="c04-distributions.html#cb94-20" tabindex="-1"></a>interval_comparison</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   prop_method       p    p_low   p_upp
+##   &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+## 1 logit       0.00322 0.00129  0.00800
+## 2 likelihood  0.00322 0.00109  0.00710
+## 3 asin        0.00322 0.000948 0.00682
+## 4 beta        0.00322 0.000981 0.00775
+## 5 mean        0.00322 0.000278 0.00615
+## 6 xlogit      0.00322 0.00129  0.00800</code></pre>
+<p>The point estimate is identical in every row, as it must be, but the lower bound varies by a factor of four across methods. The Wald interval (<code>"mean"</code>) reaches furthest towards zero and would cross it for a slightly rarer outcome, which is precisely the failure the other methods are designed to avoid. The practical advice is to leave the default <code>"logit"</code> in place, and to report which method was used whenever an estimate is small enough for the choice to change the conclusion.</p>
+</div>
+<div id="means-of-continuous-variables" class="section level3 hasAnchor" number="4.5.5">
+<h3><span class="header-section-number">4.5.5</span> Means of continuous variables<a href="c04-distributions.html#means-of-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>MathIRTScore</code> is a latent ability score, standardised so that values near zero represent typical performance across the pooled sample. Its population mean, with both a standard error and a confidence interval:</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="c04-distributions.html#cb96-1" tabindex="-1"></a>math_mean <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb96-2"><a href="c04-distributions.html#cb96-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">score =</span> <span class="fu">survey_mean</span>(</span>
+<span id="cb96-3"><a href="c04-distributions.html#cb96-3" tabindex="-1"></a>    MathIRTScore,</span>
+<span id="cb96-4"><a href="c04-distributions.html#cb96-4" tabindex="-1"></a>    <span class="at">na.rm =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb96-5"><a href="c04-distributions.html#cb96-5" tabindex="-1"></a>    <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>)</span>
+<span id="cb96-6"><a href="c04-distributions.html#cb96-6" tabindex="-1"></a>  ))</span>
+<span id="cb96-7"><a href="c04-distributions.html#cb96-7" tabindex="-1"></a></span>
+<span id="cb96-8"><a href="c04-distributions.html#cb96-8" tabindex="-1"></a>math_mean</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 4
+##    score score_se score_low score_upp
+##    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 -0.263   0.0128    -0.288    -0.238</code></pre>
+<p>Grouping splits the mean by domain. Sorting the countries makes the spread of average performance immediately visible:</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="c04-distributions.html#cb98-1" tabindex="-1"></a>math_by_country <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb98-2"><a href="c04-distributions.html#cb98-2" tabindex="-1"></a>  <span class="fu">group_by</span>(CountryName) <span class="sc">|&gt;</span></span>
+<span id="cb98-3"><a href="c04-distributions.html#cb98-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">score =</span> <span class="fu">survey_mean</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb98-4"><a href="c04-distributions.html#cb98-4" tabindex="-1"></a>  <span class="fu">arrange</span>(score)</span>
+<span id="cb98-5"><a href="c04-distributions.html#cb98-5" tabindex="-1"></a></span>
+<span id="cb98-6"><a href="c04-distributions.html#cb98-6" tabindex="-1"></a>math_by_country</span></code></pre></div>
+<pre><code>## # A tibble: 11 × 4
+##    CountryName   score score_low score_upp
+##    &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 Mali        -1.15     -1.23    -1.07   
+##  2 Mozambique  -0.813    -0.864   -0.762  
+##  3 Uganda      -0.602    -0.639   -0.565  
+##  4 Senegal     -0.437    -0.485   -0.389  
+##  5 Tanzania    -0.385    -0.431   -0.339  
+##  6 Bangladesh  -0.330    -0.366   -0.293  
+##  7 Nepal       -0.186    -0.229   -0.144  
+##  8 Nicaragua   -0.147    -0.218   -0.0756 
+##  9 Pakistan    -0.104    -0.205   -0.00176
+## 10 Mexico      -0.0501   -0.0857  -0.0144 
+## 11 Kenya        0.0281   -0.0257   0.0818</code></pre>
+<p>Average mathematics ability ranges from -1.15 in Mali to 0.03 in Kenya, a spread of more than a standard deviation of the pooled score distribution. Because the score has no natural units, differences like these are best described in relative terms or converted to proficiency rates, which are what most readers will want anyway.</p>
+</div>
+</div>
+<div id="quantiles-and-medians" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Quantiles and medians<a href="c04-distributions.html#quantiles-and-medians" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A mean compresses a distribution into a single number and can be pulled away from the typical case by a few extreme values. Quantiles describe the shape of the distribution instead. <code>survey_quantile()</code> estimates any set of quantiles; <code>survey_median()</code> is a convenience wrapper for the 50th percentile.</p>
+<div id="calling-the-functions-2" class="section level3 hasAnchor" number="4.6.1">
+<h3><span class="header-section-number">4.6.1</span> Calling the functions<a href="c04-distributions.html#calling-the-functions-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="c04-distributions.html#cb100-1" tabindex="-1"></a><span class="fu">survey_quantile</span>(</span>
+<span id="cb100-2"><a href="c04-distributions.html#cb100-2" tabindex="-1"></a>  x,</span>
+<span id="cb100-3"><a href="c04-distributions.html#cb100-3" tabindex="-1"></a>  quantiles,</span>
+<span id="cb100-4"><a href="c04-distributions.html#cb100-4" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb100-5"><a href="c04-distributions.html#cb100-5" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb100-6"><a href="c04-distributions.html#cb100-6" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb100-7"><a href="c04-distributions.html#cb100-7" tabindex="-1"></a>  <span class="at">interval_type =</span></span>
+<span id="cb100-8"><a href="c04-distributions.html#cb100-8" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">&quot;mean&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;xlogit&quot;</span>, <span class="st">&quot;asin&quot;</span>, <span class="st">&quot;score&quot;</span>, <span class="st">&quot;quantile&quot;</span>),</span>
+<span id="cb100-9"><a href="c04-distributions.html#cb100-9" tabindex="-1"></a>  <span class="at">qrule =</span> <span class="fu">c</span>(<span class="st">&quot;math&quot;</span>, <span class="st">&quot;school&quot;</span>, <span class="st">&quot;shahvaish&quot;</span>, <span class="st">&quot;hf1&quot;</span>, <span class="st">&quot;hf2&quot;</span>, <span class="st">&quot;hf3&quot;</span>,</span>
+<span id="cb100-10"><a href="c04-distributions.html#cb100-10" tabindex="-1"></a>            <span class="st">&quot;hf4&quot;</span>, <span class="st">&quot;hf5&quot;</span>, <span class="st">&quot;hf6&quot;</span>, <span class="st">&quot;hf7&quot;</span>, <span class="st">&quot;hf8&quot;</span>, <span class="st">&quot;hf9&quot;</span>),</span>
+<span id="cb100-11"><a href="c04-distributions.html#cb100-11" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb100-12"><a href="c04-distributions.html#cb100-12" tabindex="-1"></a>)</span>
+<span id="cb100-13"><a href="c04-distributions.html#cb100-13" tabindex="-1"></a></span>
+<span id="cb100-14"><a href="c04-distributions.html#cb100-14" tabindex="-1"></a><span class="fu">survey_median</span>(</span>
+<span id="cb100-15"><a href="c04-distributions.html#cb100-15" tabindex="-1"></a>  x,</span>
+<span id="cb100-16"><a href="c04-distributions.html#cb100-16" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb100-17"><a href="c04-distributions.html#cb100-17" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb100-18"><a href="c04-distributions.html#cb100-18" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb100-19"><a href="c04-distributions.html#cb100-19" tabindex="-1"></a>  <span class="at">interval_type =</span></span>
+<span id="cb100-20"><a href="c04-distributions.html#cb100-20" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">&quot;mean&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;xlogit&quot;</span>, <span class="st">&quot;asin&quot;</span>, <span class="st">&quot;score&quot;</span>, <span class="st">&quot;quantile&quot;</span>),</span>
+<span id="cb100-21"><a href="c04-distributions.html#cb100-21" tabindex="-1"></a>  <span class="at">qrule =</span> <span class="fu">c</span>(<span class="st">&quot;math&quot;</span>, <span class="st">&quot;school&quot;</span>, <span class="st">&quot;shahvaish&quot;</span>, <span class="st">&quot;hf1&quot;</span>, <span class="st">&quot;hf2&quot;</span>, <span class="st">&quot;hf3&quot;</span>,</span>
+<span id="cb100-22"><a href="c04-distributions.html#cb100-22" tabindex="-1"></a>            <span class="st">&quot;hf4&quot;</span>, <span class="st">&quot;hf5&quot;</span>, <span class="st">&quot;hf6&quot;</span>, <span class="st">&quot;hf7&quot;</span>, <span class="st">&quot;hf8&quot;</span>, <span class="st">&quot;hf9&quot;</span>),</span>
+<span id="cb100-23"><a href="c04-distributions.html#cb100-23" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb100-24"><a href="c04-distributions.html#cb100-24" tabindex="-1"></a>)</span></code></pre></div>
+<p>The only structural difference is the <code>quantiles</code> argument, a vector of values between 0 and 1 that <code>survey_median()</code> fixes at 0.5. Two further arguments deserve comment. <code>interval_type</code> selects the confidence interval method; besides the options already met for proportions, quantiles offer <code>"score"</code>, which inverts a score test and is available for design-based objects only, and <code>"quantile"</code>, which uses the replicate distribution and is valid for bootstrap and balanced repeated replication weights but not for jackknife weights. The <code>score</code> method behaves poorly when many observations tie on the same value, which is common for ages, grades, and item counts, so an interval-based method is safer for those variables. <code>qrule</code> decides how a quantile is defined when it falls between two observed values; <code>vignette("qrule", package = "survey")</code> works through the alternatives.</p>
+</div>
+<div id="quartiles-of-the-mathematics-score" class="section level3 hasAnchor" number="4.6.2">
+<h3><span class="header-section-number">4.6.2</span> Quartiles of the mathematics score<a href="c04-distributions.html#quartiles-of-the-mathematics-score" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="c04-distributions.html#cb101-1" tabindex="-1"></a>math_quartiles <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb101-2"><a href="c04-distributions.html#cb101-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">score =</span> <span class="fu">survey_quantile</span>(</span>
+<span id="cb101-3"><a href="c04-distributions.html#cb101-3" tabindex="-1"></a>    MathIRTScore,</span>
+<span id="cb101-4"><a href="c04-distributions.html#cb101-4" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>),</span>
+<span id="cb101-5"><a href="c04-distributions.html#cb101-5" tabindex="-1"></a>    <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb101-6"><a href="c04-distributions.html#cb101-6" tabindex="-1"></a>  ))</span>
+<span id="cb101-7"><a href="c04-distributions.html#cb101-7" tabindex="-1"></a></span>
+<span id="cb101-8"><a href="c04-distributions.html#cb101-8" tabindex="-1"></a>math_quartiles</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 6
+##   score_q25 score_q50 score_q75 score_q25_se score_q50_se score_q75_se
+##       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1    -0.908    -0.230     0.330       0.0165      0.00863       0.0133</code></pre>
+<p>The quartiles are -0.91, -0.23, and 0.33. The middle half of children therefore sit within a band about 1.24 score points wide. The median, -0.23, is slightly above the mean of -0.26, which points to a mild left skew: a tail of very low-scoring children pulls the average down below the typical child.</p>
+<p>Medians can be grouped like any other estimate:</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="c04-distributions.html#cb103-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb103-2"><a href="c04-distributions.html#cb103-2" tabindex="-1"></a>  <span class="fu">group_by</span>(residence) <span class="sc">|&gt;</span></span>
+<span id="cb103-3"><a href="c04-distributions.html#cb103-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">score =</span> <span class="fu">survey_median</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 4
+##   residence  score score_low score_upp
+##   &lt;fct&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Rural     -0.317    -0.343    -0.289
+## 2 Urban     -0.134    -0.166    -0.105</code></pre>
+</div>
+<div id="where-quantiles-earn-their-keep" class="section level3 hasAnchor" number="4.6.3">
+<h3><span class="header-section-number">4.6.3</span> Where quantiles earn their keep<a href="c04-distributions.html#where-quantiles-earn-their-keep" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Assessment duration shows why a median is sometimes the only defensible summary. <code>IcanAssessTime</code> records how long the numeracy assessment took in minutes, and a handful of records run to several hours, almost certainly because a tablet was left open rather than because a child worked for that long.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="c04-distributions.html#cb105-1" tabindex="-1"></a>time_summary <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb105-2"><a href="c04-distributions.html#cb105-2" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb105-3"><a href="c04-distributions.html#cb105-3" tabindex="-1"></a>    <span class="at">mean_minutes =</span> <span class="fu">survey_mean</span>(IcanAssessTime, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb105-4"><a href="c04-distributions.html#cb105-4" tabindex="-1"></a>    <span class="at">median_minutes =</span> <span class="fu">survey_median</span>(IcanAssessTime, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb105-5"><a href="c04-distributions.html#cb105-5" tabindex="-1"></a>    <span class="at">p90_minutes =</span> <span class="fu">survey_quantile</span>(</span>
+<span id="cb105-6"><a href="c04-distributions.html#cb105-6" tabindex="-1"></a>      IcanAssessTime,</span>
+<span id="cb105-7"><a href="c04-distributions.html#cb105-7" tabindex="-1"></a>      <span class="at">quantiles =</span> <span class="fl">0.9</span>,</span>
+<span id="cb105-8"><a href="c04-distributions.html#cb105-8" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb105-9"><a href="c04-distributions.html#cb105-9" tabindex="-1"></a>      <span class="at">vartype =</span> <span class="cn">NULL</span></span>
+<span id="cb105-10"><a href="c04-distributions.html#cb105-10" tabindex="-1"></a>    ),</span>
+<span id="cb105-11"><a href="c04-distributions.html#cb105-11" tabindex="-1"></a>    <span class="at">longest_minutes =</span> <span class="fu">unweighted</span>(<span class="fu">max</span>(IcanAssessTime, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb105-12"><a href="c04-distributions.html#cb105-12" tabindex="-1"></a>  )</span>
+<span id="cb105-13"><a href="c04-distributions.html#cb105-13" tabindex="-1"></a></span>
+<span id="cb105-14"><a href="c04-distributions.html#cb105-14" tabindex="-1"></a>time_summary</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 4
+##   mean_minutes median_minutes p90_minutes_q90 longest_minutes
+##          &lt;dbl&gt;          &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+## 1         8.49            6.8            14.2            713.</code></pre>
+<p>The median assessment takes 6.8 minutes and nine children in ten finish within 14.2 minutes, yet the mean is 8.5 minutes and the longest record is 713 minutes. Reporting the mean here would misdescribe almost every assessment in the survey. Note also <code>unweighted()</code>, used to pull a sample maximum out of the design object; it is covered properly below.</p>
+<p>Quantiles of 0 and 1 are accepted but are a trap:</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="c04-distributions.html#cb107-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb107-2"><a href="c04-distributions.html#cb107-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">score =</span> <span class="fu">survey_quantile</span>(</span>
+<span id="cb107-3"><a href="c04-distributions.html#cb107-3" tabindex="-1"></a>    MathIRTScore,</span>
+<span id="cb107-4"><a href="c04-distributions.html#cb107-4" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb107-5"><a href="c04-distributions.html#cb107-5" tabindex="-1"></a>    <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb107-6"><a href="c04-distributions.html#cb107-6" tabindex="-1"></a>  ))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 4
+##   score_q00 score_q100 score_q00_se score_q100_se
+##       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;
+## 1     -3.07       2.14        0.101             0</code></pre>
+<p>These are the smallest and largest values <em>in the sample</em>. The maximum has a standard error of exactly 0, which is not a claim of perfect precision but a sign that no valid uncertainty can be attached to an extreme order statistic. Extremes do not generalise from a sample to a population, so avoid presenting them as population estimates.</p>
+</div>
+</div>
+<div id="ratios" class="section level2 hasAnchor" number="4.7">
+<h2><span class="header-section-number">4.7</span> Ratios<a href="c04-distributions.html#ratios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A ratio estimates the total of one variable divided by the total of another:</p>
+<p><span class="math display">\[\frac{\sum x_i}{\sum y_i}\]</span></p>
+<p>This is not the same as averaging the individual ratios,</p>
+<p><span class="math display">\[\frac{1}{N}\sum \frac{x_i}{y_i},\]</span></p>
+<p>which is what <code>survey_mean()</code> returns if we construct the quotient first. The distinction is easy to state and easy to forget: the first weights each case by the size of its denominator, so big cases count for more; the second treats every case equally.</p>
+<div id="calling-the-function-1" class="section level3 hasAnchor" number="4.7.1">
+<h3><span class="header-section-number">4.7.1</span> Calling the function<a href="c04-distributions.html#calling-the-function-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="c04-distributions.html#cb109-1" tabindex="-1"></a><span class="fu">survey_ratio</span>(</span>
+<span id="cb109-2"><a href="c04-distributions.html#cb109-2" tabindex="-1"></a>  numerator,</span>
+<span id="cb109-3"><a href="c04-distributions.html#cb109-3" tabindex="-1"></a>  denominator,</span>
+<span id="cb109-4"><a href="c04-distributions.html#cb109-4" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb109-5"><a href="c04-distributions.html#cb109-5" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb109-6"><a href="c04-distributions.html#cb109-6" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb109-7"><a href="c04-distributions.html#cb109-7" tabindex="-1"></a>  <span class="at">deff =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb109-8"><a href="c04-distributions.html#cb109-8" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb109-9"><a href="c04-distributions.html#cb109-9" tabindex="-1"></a>)</span></code></pre></div>
+<p>The first two arguments are the numerator and denominator variables; the rest behave as in the other estimators.</p>
+</div>
+<div id="how-much-longer-is-the-numeracy-assessment-than-the-reading-one" class="section level3 hasAnchor" number="4.7.2">
+<h3><span class="header-section-number">4.7.2</span> How much longer is the numeracy assessment than the reading one?<a href="c04-distributions.html#how-much-longer-is-the-numeracy-assessment-than-the-reading-one" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Every child who completed both assessments has a timing for each. The two ways of expressing “how much longer ICAN takes than ICAR” give different answers:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="c04-distributions.html#cb110-1" tabindex="-1"></a>time_ratio <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb110-2"><a href="c04-distributions.html#cb110-2" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb110-3"><a href="c04-distributions.html#cb110-3" tabindex="-1"></a>    <span class="at">ican_total =</span> <span class="fu">survey_total</span>(IcanAssessTime, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb110-4"><a href="c04-distributions.html#cb110-4" tabindex="-1"></a>    <span class="at">icar_total =</span> <span class="fu">survey_total</span>(IcarAssessTime, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb110-5"><a href="c04-distributions.html#cb110-5" tabindex="-1"></a>    <span class="at">ratio_of_totals =</span> <span class="fu">survey_ratio</span>(IcanAssessTime, IcarAssessTime, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb110-6"><a href="c04-distributions.html#cb110-6" tabindex="-1"></a>    <span class="at">mean_of_ratios =</span> <span class="fu">survey_mean</span>(</span>
+<span id="cb110-7"><a href="c04-distributions.html#cb110-7" tabindex="-1"></a>      IcanAssessTime <span class="sc">/</span> IcarAssessTime,</span>
+<span id="cb110-8"><a href="c04-distributions.html#cb110-8" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb110-9"><a href="c04-distributions.html#cb110-9" tabindex="-1"></a>      <span class="at">vartype =</span> <span class="cn">NULL</span></span>
+<span id="cb110-10"><a href="c04-distributions.html#cb110-10" tabindex="-1"></a>    )</span>
+<span id="cb110-11"><a href="c04-distributions.html#cb110-11" tabindex="-1"></a>  )</span>
+<span id="cb110-12"><a href="c04-distributions.html#cb110-12" tabindex="-1"></a></span>
+<span id="cb110-13"><a href="c04-distributions.html#cb110-13" tabindex="-1"></a>time_ratio</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 5
+##    ican_total  icar_total ratio_of_totals ratio_of_totals_se mean_of_ratios
+##         &lt;dbl&gt;       &lt;dbl&gt;           &lt;dbl&gt;              &lt;dbl&gt;          &lt;dbl&gt;
+## 1 2061674526. 1563295302.            1.30             0.0231           1.78</code></pre>
+<p>The ratio of totals is 1.30: across all the assessment time the survey represents, 1.30 minutes went into numeracy for every minute spent on reading. It is exactly the quotient of the two totals shown alongside it, which is worth confirming by hand once, although only <code>survey_ratio()</code> gives the correct standard error for it. The mean of the individual ratios is 1.78, noticeably larger, because children who raced through the reading assessment produce very large individual quotients and each of them counts as much as a child who took an hour.</p>
+<p>Neither number is wrong. The ratio of totals answers “how is total assessment time divided between the two instruments”, which is the question a fieldwork budget asks. The mean of ratios answers “for a typical child, how do the two durations compare”. Ratios of totals also vary by context:</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="c04-distributions.html#cb112-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb112-2"><a href="c04-distributions.html#cb112-2" tabindex="-1"></a>  <span class="fu">group_by</span>(CountryName) <span class="sc">|&gt;</span></span>
+<span id="cb112-3"><a href="c04-distributions.html#cb112-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">ratio =</span> <span class="fu">survey_ratio</span>(IcanAssessTime, IcarAssessTime, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb112-4"><a href="c04-distributions.html#cb112-4" tabindex="-1"></a>  <span class="fu">arrange</span>(ratio)</span></code></pre></div>
+<pre><code>## # A tibble: 11 × 3
+##    CountryName ratio ratio_se
+##    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Bangladesh   1.11   0.0247
+##  2 Nepal        1.16   0.0328
+##  3 Pakistan     1.20   0.0952
+##  4 Mozambique   1.21   0.0893
+##  5 Tanzania     1.23   0.0368
+##  6 Kenya        1.28   0.0470
+##  7 Mexico       1.41   0.0332
+##  8 Nicaragua    1.43   0.0765
+##  9 Uganda       1.67   0.0425
+## 10 Senegal      1.83   0.138 
+## 11 Mali         2.10   0.235</code></pre>
+</div>
+</div>
+<div id="correlation" class="section level2 hasAnchor" number="4.8">
+<h2><span class="header-section-number">4.8</span> Correlation<a href="c04-distributions.html#correlation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>survey_corr()</code> estimates Pearson’s correlation between two continuous variables, applying the survey weights. For a simple random sample the sample correlation is</p>
+<p><span class="math display">\[\frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2}\sqrt{\sum (y_i - \bar{y})^2}}\]</span></p>
+<p>and the survey version replaces the unweighted sums with weighted ones. The result stays between -1 and 1 and measures only the strength of a <em>linear</em> relationship.</p>
+<div id="calling-the-function-2" class="section level3 hasAnchor" number="4.8.1">
+<h3><span class="header-section-number">4.8.1</span> Calling the function<a href="c04-distributions.html#calling-the-function-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="c04-distributions.html#cb114-1" tabindex="-1"></a><span class="fu">survey_corr</span>(</span>
+<span id="cb114-2"><a href="c04-distributions.html#cb114-2" tabindex="-1"></a>  x,</span>
+<span id="cb114-3"><a href="c04-distributions.html#cb114-3" tabindex="-1"></a>  y,</span>
+<span id="cb114-4"><a href="c04-distributions.html#cb114-4" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb114-5"><a href="c04-distributions.html#cb114-5" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>, <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb114-6"><a href="c04-distributions.html#cb114-6" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb114-7"><a href="c04-distributions.html#cb114-7" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb114-8"><a href="c04-distributions.html#cb114-8" tabindex="-1"></a>)</span></code></pre></div>
+<p><code>x</code> and <code>y</code> are the two variables or expressions; the remaining arguments are the familiar ones.</p>
+</div>
+<div id="do-reading-and-numeracy-travel-together" class="section level3 hasAnchor" number="4.8.2">
+<h3><span class="header-section-number">4.8.2</span> Do reading and numeracy travel together?<a href="c04-distributions.html#do-reading-and-numeracy-travel-together" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="c04-distributions.html#cb115-1" tabindex="-1"></a>score_corr <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb115-2"><a href="c04-distributions.html#cb115-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">correlation =</span> <span class="fu">survey_corr</span>(</span>
+<span id="cb115-3"><a href="c04-distributions.html#cb115-3" tabindex="-1"></a>    MathIRTScore,</span>
+<span id="cb115-4"><a href="c04-distributions.html#cb115-4" tabindex="-1"></a>    ReadingIRTScore,</span>
+<span id="cb115-5"><a href="c04-distributions.html#cb115-5" tabindex="-1"></a>    <span class="at">na.rm =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb115-6"><a href="c04-distributions.html#cb115-6" tabindex="-1"></a>    <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span></span>
+<span id="cb115-7"><a href="c04-distributions.html#cb115-7" tabindex="-1"></a>  ))</span>
+<span id="cb115-8"><a href="c04-distributions.html#cb115-8" tabindex="-1"></a></span>
+<span id="cb115-9"><a href="c04-distributions.html#cb115-9" tabindex="-1"></a>score_corr</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   correlation correlation_low correlation_upp
+##         &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;
+## 1       0.794           0.786           0.803</code></pre>
+<p>The correlation is 0.79, a strong positive relationship: children who read well tend to do well in mathematics, which is what we would expect if both depend on shared foundations such as language of instruction, years of effective schooling, and home support. It is not close enough to 1 to treat the two scores as interchangeable, and correlation says nothing about which skill supports the other.</p>
+<p>Splitting the estimate by domain tests whether the association itself varies:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="c04-distributions.html#cb117-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb117-2"><a href="c04-distributions.html#cb117-2" tabindex="-1"></a>  <span class="fu">group_by</span>(residence) <span class="sc">|&gt;</span></span>
+<span id="cb117-3"><a href="c04-distributions.html#cb117-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">correlation =</span> <span class="fu">survey_corr</span>(</span>
+<span id="cb117-4"><a href="c04-distributions.html#cb117-4" tabindex="-1"></a>    MathIRTScore,</span>
+<span id="cb117-5"><a href="c04-distributions.html#cb117-5" tabindex="-1"></a>    ReadingIRTScore,</span>
+<span id="cb117-6"><a href="c04-distributions.html#cb117-6" tabindex="-1"></a>    <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb117-7"><a href="c04-distributions.html#cb117-7" tabindex="-1"></a>  ))</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 3
+##   residence correlation correlation_se
+##   &lt;fct&gt;           &lt;dbl&gt;          &lt;dbl&gt;
+## 1 Rural           0.792        0.00666
+## 2 Urban           0.792        0.00503</code></pre>
+<p>The association is essentially the same in rural and urban areas. Levels of achievement differ sharply between the two, as the earlier proportions showed, but the way reading and numeracy move together does not.</p>
+</div>
+</div>
+<div id="variance-and-standard-deviation" class="section level2 hasAnchor" number="4.9">
+<h2><span class="header-section-number">4.9</span> Variance and standard deviation<a href="c04-distributions.html#variance-and-standard-deviation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Every estimator in this chapter reports the uncertainty of its own estimate, and that is a different thing from the spread of the underlying variable. When the spread itself is the object of interest, <code>survey_var()</code> and <code>survey_sd()</code> estimate the population variance and standard deviation. These come up less often than the other functions, but they are useful for describing inequality in outcomes and for planning the sample size of a future survey.</p>
+<div id="calling-the-functions-3" class="section level3 hasAnchor" number="4.9.1">
+<h3><span class="header-section-number">4.9.1</span> Calling the functions<a href="c04-distributions.html#calling-the-functions-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="c04-distributions.html#cb119-1" tabindex="-1"></a><span class="fu">survey_var</span>(</span>
+<span id="cb119-2"><a href="c04-distributions.html#cb119-2" tabindex="-1"></a>  x,</span>
+<span id="cb119-3"><a href="c04-distributions.html#cb119-3" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb119-4"><a href="c04-distributions.html#cb119-4" tabindex="-1"></a>  <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;var&quot;</span>),</span>
+<span id="cb119-5"><a href="c04-distributions.html#cb119-5" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb119-6"><a href="c04-distributions.html#cb119-6" tabindex="-1"></a>  <span class="at">df =</span> <span class="cn">NULL</span></span>
+<span id="cb119-7"><a href="c04-distributions.html#cb119-7" tabindex="-1"></a>)</span>
+<span id="cb119-8"><a href="c04-distributions.html#cb119-8" tabindex="-1"></a></span>
+<span id="cb119-9"><a href="c04-distributions.html#cb119-9" tabindex="-1"></a><span class="fu">survey_sd</span>(</span>
+<span id="cb119-10"><a href="c04-distributions.html#cb119-10" tabindex="-1"></a>  x,</span>
+<span id="cb119-11"><a href="c04-distributions.html#cb119-11" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">FALSE</span></span>
+<span id="cb119-12"><a href="c04-distributions.html#cb119-12" tabindex="-1"></a>)</span></code></pre></div>
+<p>Since the standard deviation is just the variance put back on the scale of the original variable, the two functions share their arguments, except that <code>survey_sd()</code> accepts no <code>vartype</code>: it is the one estimate in the chapter that comes without a standard error.</p>
+</div>
+<div id="how-unequal-are-learning-outcomes" class="section level3 hasAnchor" number="4.9.2">
+<h3><span class="header-section-number">4.9.2</span> How unequal are learning outcomes?<a href="c04-distributions.html#how-unequal-are-learning-outcomes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="c04-distributions.html#cb120-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb120-2"><a href="c04-distributions.html#cb120-2" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb120-3"><a href="c04-distributions.html#cb120-3" tabindex="-1"></a>    <span class="at">variance =</span> <span class="fu">survey_var</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb120-4"><a href="c04-distributions.html#cb120-4" tabindex="-1"></a>    <span class="at">std_dev =</span> <span class="fu">survey_sd</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb120-5"><a href="c04-distributions.html#cb120-5" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   variance variance_se std_dev
+##      &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;
+## 1     1.12      0.0266    1.06</code></pre>
+<p>The output gives the estimated population variance, its standard error, and the estimated standard deviation. Depending on the versions of R and {survey} installed, <code>survey_var()</code> may also emit a warning about a deprecated recycling operation in its internal calculation; the estimates are unaffected.</p>
+<p>Comparing spread across countries is often more revealing than comparing averages, because a country can raise its mean while leaving the weakest children behind:</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="c04-distributions.html#cb122-1" tabindex="-1"></a>spread_by_country <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb122-2"><a href="c04-distributions.html#cb122-2" tabindex="-1"></a>  <span class="fu">group_by</span>(CountryName) <span class="sc">|&gt;</span></span>
+<span id="cb122-3"><a href="c04-distributions.html#cb122-3" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb122-4"><a href="c04-distributions.html#cb122-4" tabindex="-1"></a>    <span class="at">variance =</span> <span class="fu">survey_var</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb122-5"><a href="c04-distributions.html#cb122-5" tabindex="-1"></a>    <span class="at">std_dev =</span> <span class="fu">survey_sd</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-6"><a href="c04-distributions.html#cb122-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb122-7"><a href="c04-distributions.html#cb122-7" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(std_dev))</span>
+<span id="cb122-8"><a href="c04-distributions.html#cb122-8" tabindex="-1"></a></span>
+<span id="cb122-9"><a href="c04-distributions.html#cb122-9" tabindex="-1"></a>spread_by_country</span></code></pre></div>
+<pre><code>## # A tibble: 11 × 3
+##    CountryName variance std_dev
+##    &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;
+##  1 Pakistan       2.50    1.58 
+##  2 Tanzania       1.15    1.07 
+##  3 Senegal        1.04    1.02 
+##  4 Kenya          0.864   0.930
+##  5 Mali           0.806   0.898
+##  6 Mozambique     0.668   0.818
+##  7 Uganda         0.654   0.809
+##  8 Mexico         0.591   0.769
+##  9 Nicaragua      0.555   0.745
+## 10 Bangladesh     0.538   0.734
+## 11 Nepal          0.497   0.705</code></pre>
+<p>Scores are most dispersed in Pakistan (standard deviation 1.58) and most tightly clustered in Nepal (0.71). A wide distribution and a modest mean together suggest a system serving some children well and others hardly at all, which calls for a different response than a system where nearly everyone performs poorly.</p>
+</div>
+</div>
+<div id="rounding-out-the-toolkit" class="section level2 hasAnchor" number="4.10">
+<h2><span class="header-section-number">4.10</span> Rounding out the toolkit<a href="c04-distributions.html#rounding-out-the-toolkit" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The remaining tools are less about new statistics than about producing analysis that is efficient to write and honest to read.</p>
+<div id="comparing-weighted-and-unweighted-results" class="section level3 hasAnchor" number="4.10.1">
+<h3><span class="header-section-number">4.10.1</span> Comparing weighted and unweighted results<a href="c04-distributions.html#comparing-weighted-and-unweighted-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>unweighted()</code> evaluates an ordinary R expression on the rows of the design object, ignoring the weights. It describes the children who were assessed rather than the population they represent, and putting the two side by side shows how much the weights are doing:</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="c04-distributions.html#cb124-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb124-2"><a href="c04-distributions.html#cb124-2" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb124-3"><a href="c04-distributions.html#cb124-3" tabindex="-1"></a>    <span class="at">weighted_mean =</span> <span class="fu">survey_mean</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb124-4"><a href="c04-distributions.html#cb124-4" tabindex="-1"></a>    <span class="at">sample_mean =</span> <span class="fu">unweighted</span>(<span class="fu">mean</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb124-5"><a href="c04-distributions.html#cb124-5" tabindex="-1"></a>    <span class="at">children_assessed =</span> <span class="fu">unweighted</span>(<span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(MathIRTScore)))</span>
+<span id="cb124-6"><a href="c04-distributions.html#cb124-6" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   weighted_mean sample_mean children_assessed
+##           &lt;dbl&gt;       &lt;dbl&gt;             &lt;int&gt;
+## 1        -0.263      -0.416             89138</code></pre>
+<p>The two means differ substantially. The sample mean is the lower of the two because countries and areas with weaker results are over-represented in the sample relative to their share of the population; the weights correct for that. Reporting the unweighted figure as a population estimate would overstate how badly children are doing. <code>unweighted()</code> is for sample descriptions, quality checks, and reporting how many observations an estimate rests on, never for population claims.</p>
+</div>
+<div id="restricting-to-a-subpopulation" class="section level3 hasAnchor" number="4.10.2">
+<h3><span class="header-section-number">4.10.2</span> Restricting to a subpopulation<a href="c04-distributions.html#restricting-to-a-subpopulation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Estimates for part of the population are produced by <code>filter()</code>, applied to the design object rather than the data. The design keeps the information about the excluded cases that the variance calculation needs, which is why the order matters.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="c04-distributions.html#cb126-1" tabindex="-1"></a>enrolled_mpl <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb126-2"><a href="c04-distributions.html#cb126-2" tabindex="-1"></a>  <span class="fu">filter</span>(EnrolmentStatus <span class="sc">==</span> <span class="st">&quot;Currently Enrolled&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb126-3"><a href="c04-distributions.html#cb126-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_mean</span>(MPLMath, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>))</span>
+<span id="cb126-4"><a href="c04-distributions.html#cb126-4" tabindex="-1"></a></span>
+<span id="cb126-5"><a href="c04-distributions.html#cb126-5" tabindex="-1"></a>all_mpl <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb126-6"><a href="c04-distributions.html#cb126-6" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_mean</span>(MPLMath, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>))</span>
+<span id="cb126-7"><a href="c04-distributions.html#cb126-7" tabindex="-1"></a></span>
+<span id="cb126-8"><a href="c04-distributions.html#cb126-8" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb126-9"><a href="c04-distributions.html#cb126-9" tabindex="-1"></a>  enrolled_mpl <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">population =</span> <span class="st">&quot;Currently enrolled&quot;</span>),</span>
+<span id="cb126-10"><a href="c04-distributions.html#cb126-10" tabindex="-1"></a>  all_mpl <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">population =</span> <span class="st">&quot;All children&quot;</span>)</span>
+<span id="cb126-11"><a href="c04-distributions.html#cb126-11" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb126-12"><a href="c04-distributions.html#cb126-12" tabindex="-1"></a>  <span class="fu">relocate</span>(population)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 4
+##   population             p p_low p_upp
+##   &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Currently enrolled 0.530 0.520 0.540
+## 2 All children       0.507 0.498 0.517</code></pre>
+<p>Mathematics proficiency is 53.0% among enrolled children and 50.7% among all children. The difference is modest because most children in the survey are enrolled, but the two figures answer different questions and should never be swapped: one describes what schooling is delivering, the other describes the whole cohort including children school never reached.</p>
+</div>
+<div id="dist-deff" class="section level3 hasAnchor" number="4.10.3">
+<h3><span class="header-section-number">4.10.3</span> Design effects and effective sample size<a href="c04-distributions.html#dist-deff" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Clustered samples are cheaper to collect than simple random samples but carry less information per observation, because children in the same village resemble each other. The design effect quantifies that loss: it is the variance of an estimate under the actual design divided by its variance under simple random sampling without replacement. A value above 1 says the design buys less precision than simple random sampling would for the same number of observations; a value below 1, which is uncommon but does happen when the strata line up closely with the outcome, says it buys more. Dividing the sample size by the design effect gives the effective sample size,</p>
+<p><span class="math display">\[n_{eff} = \frac{n}{D_{eff}},\]</span></p>
+<p>the size of the simple random sample that would have produced equally precise estimates. Setting <code>deff = TRUE</code> requests it:</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="c04-distributions.html#cb128-1" tabindex="-1"></a>math_deff <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb128-2"><a href="c04-distributions.html#cb128-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(MathIRTScore)) <span class="sc">|&gt;</span></span>
+<span id="cb128-3"><a href="c04-distributions.html#cb128-3" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb128-4"><a href="c04-distributions.html#cb128-4" tabindex="-1"></a>    <span class="at">score =</span> <span class="fu">survey_mean</span>(MathIRTScore, <span class="at">deff =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb128-5"><a href="c04-distributions.html#cb128-5" tabindex="-1"></a>    <span class="at">children =</span> <span class="fu">unweighted</span>(<span class="fu">length</span>(MathIRTScore))</span>
+<span id="cb128-6"><a href="c04-distributions.html#cb128-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb128-7"><a href="c04-distributions.html#cb128-7" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_effective =</span> children <span class="sc">/</span> score_deff)</span>
+<span id="cb128-8"><a href="c04-distributions.html#cb128-8" tabindex="-1"></a></span>
+<span id="cb128-9"><a href="c04-distributions.html#cb128-9" tabindex="-1"></a>math_deff</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 5
+##    score score_se score_deff children n_effective
+##    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt;       &lt;dbl&gt;
+## 1 -0.263   0.0128       13.1    89138       6826.</code></pre>
+<p>The design effect for the mean mathematics score is 13.1, so the 89,138 assessed children carry about as much information as a simple random sample of 6,826. That is a large effect, and it has a straightforward explanation: with roughly 20 households per enumeration area, and learning outcomes strongly clustered by community and school, neighbouring children supply overlapping information. It also explains why ignoring the design would be so misleading here, since standard errors computed as if the sample were random would be far too small.</p>
+<p>Design effects are specific to each outcome. Variables that vary within a village more than between villages, such as the child’s sex, show much weaker clustering than variables shaped by the local school and language environment.</p>
+</div>
+<div id="adding-summary-rows-with-cascade" class="section level3 hasAnchor" number="4.10.4">
+<h3><span class="header-section-number">4.10.4</span> Adding summary rows with <code>cascade()</code><a href="c04-distributions.html#adding-summary-rows-with-cascade" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>group_by()</code> followed by <code>summarize()</code> gives one row per group and nothing else. Reports usually want a total row alongside the groups. <code>cascade()</code> replaces <code>summarize()</code> and adds it:</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="c04-distributions.html#cb130-1" tabindex="-1"></a><span class="fu">cascade</span>(</span>
+<span id="cb130-2"><a href="c04-distributions.html#cb130-2" tabindex="-1"></a>  .data,</span>
+<span id="cb130-3"><a href="c04-distributions.html#cb130-3" tabindex="-1"></a>  ...,</span>
+<span id="cb130-4"><a href="c04-distributions.html#cb130-4" tabindex="-1"></a>  <span class="at">.fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb130-5"><a href="c04-distributions.html#cb130-5" tabindex="-1"></a>  <span class="at">.fill_level_top =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb130-6"><a href="c04-distributions.html#cb130-6" tabindex="-1"></a>  <span class="at">.groupings =</span> <span class="cn">NULL</span></span>
+<span id="cb130-7"><a href="c04-distributions.html#cb130-7" tabindex="-1"></a>)</span></code></pre></div>
+<p><code>.data</code> is the design object and <code>...</code> takes the same name-value pairs as <code>summarize()</code>. <code>.fill</code> supplies the label for the summary row, <code>NA</code> by default. <code>.fill_level_top</code> moves that row to the top of the output, which works when the grouping variable is a factor.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="c04-distributions.html#cb131-1" tabindex="-1"></a>icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb131-2"><a href="c04-distributions.html#cb131-2" tabindex="-1"></a>  <span class="fu">group_by</span>(residence) <span class="sc">|&gt;</span></span>
+<span id="cb131-3"><a href="c04-distributions.html#cb131-3" tabindex="-1"></a>  <span class="fu">cascade</span>(</span>
+<span id="cb131-4"><a href="c04-distributions.html#cb131-4" tabindex="-1"></a>    <span class="at">score =</span> <span class="fu">survey_mean</span>(MathIRTScore, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb131-5"><a href="c04-distributions.html#cb131-5" tabindex="-1"></a>    <span class="at">children =</span> <span class="fu">survey_total</span>(MPLBoth, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb131-6"><a href="c04-distributions.html#cb131-6" tabindex="-1"></a>    <span class="at">.fill =</span> <span class="st">&quot;All areas&quot;</span></span>
+<span id="cb131-7"><a href="c04-distributions.html#cb131-7" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 4
+##   residence  score score_se  children
+##   &lt;fct&gt;      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Rural     -0.358   0.0190 45176968.
+## 2 Urban     -0.145   0.0186 50726065.
+## 3 All areas -0.263   0.0128 95903033.</code></pre>
+<p>The final row is the overall estimate, not a third residence category, and giving it a label such as “All areas” through <code>.fill</code> prevents readers from misreading an <code>NA</code> as missing data.</p>
+</div>
+<div id="estimating-several-outcomes-at-once" class="section level3 hasAnchor" number="4.10.5">
+<h3><span class="header-section-number">4.10.5</span> Estimating several outcomes at once<a href="c04-distributions.html#estimating-several-outcomes-at-once" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Reporting rarely stops at one indicator. <code>across()</code> applies the same estimator to several variables inside a single <code>summarize()</code>, and <code>.unpack</code> controls how the resulting columns are named:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="c04-distributions.html#cb133-1" tabindex="-1"></a>mpl_wide <span class="ot">&lt;-</span> icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb133-2"><a href="c04-distributions.html#cb133-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(</span>
+<span id="cb133-3"><a href="c04-distributions.html#cb133-3" tabindex="-1"></a>    <span class="fu">c</span>(MPLReading, MPLMath, MPLBoth),</span>
+<span id="cb133-4"><a href="c04-distributions.html#cb133-4" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">survey_mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>),</span>
+<span id="cb133-5"><a href="c04-distributions.html#cb133-5" tabindex="-1"></a>    <span class="at">.unpack =</span> <span class="st">&quot;{outer}.{inner}&quot;</span></span>
+<span id="cb133-6"><a href="c04-distributions.html#cb133-6" tabindex="-1"></a>  ))</span>
+<span id="cb133-7"><a href="c04-distributions.html#cb133-7" tabindex="-1"></a></span>
+<span id="cb133-8"><a href="c04-distributions.html#cb133-8" tabindex="-1"></a>mpl_wide</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 9
+##   MPLReading.coef MPLReading._low MPLReading._upp MPLMath.coef MPLMath._low MPLMath._upp MPLBoth.coef MPLBoth._low MPLBoth._upp
+##             &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1           0.378           0.366           0.389        0.507        0.498        0.517        0.344        0.333        0.355</code></pre>
+<p>One wide row is convenient for the computer and awkward for a reader. <code>pivot_longer()</code> turns it into one row per indicator, using a regular expression to split each column name at the dot:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="c04-distributions.html#cb135-1" tabindex="-1"></a>mpl_long <span class="ot">&lt;-</span> mpl_wide <span class="sc">|&gt;</span></span>
+<span id="cb135-2"><a href="c04-distributions.html#cb135-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb135-3"><a href="c04-distributions.html#cb135-3" tabindex="-1"></a>    <span class="fu">everything</span>(),</span>
+<span id="cb135-4"><a href="c04-distributions.html#cb135-4" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">&quot;indicator&quot;</span>, <span class="st">&quot;.value&quot;</span>),</span>
+<span id="cb135-5"><a href="c04-distributions.html#cb135-5" tabindex="-1"></a>    <span class="at">names_pattern =</span> <span class="st">&quot;(.*)</span><span class="sc">\\</span><span class="st">.(.*)&quot;</span></span>
+<span id="cb135-6"><a href="c04-distributions.html#cb135-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb135-7"><a href="c04-distributions.html#cb135-7" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">proportion =</span> coef, <span class="at">lower =</span> <span class="st">`</span><span class="at">_low</span><span class="st">`</span>, <span class="at">upper =</span> <span class="st">`</span><span class="at">_upp</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb135-8"><a href="c04-distributions.html#cb135-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">indicator =</span> <span class="fu">recode</span>(</span>
+<span id="cb135-9"><a href="c04-distributions.html#cb135-9" tabindex="-1"></a>    indicator,</span>
+<span id="cb135-10"><a href="c04-distributions.html#cb135-10" tabindex="-1"></a>    <span class="at">MPLReading =</span> <span class="st">&quot;Reading&quot;</span>,</span>
+<span id="cb135-11"><a href="c04-distributions.html#cb135-11" tabindex="-1"></a>    <span class="at">MPLMath =</span> <span class="st">&quot;Mathematics&quot;</span>,</span>
+<span id="cb135-12"><a href="c04-distributions.html#cb135-12" tabindex="-1"></a>    <span class="at">MPLBoth =</span> <span class="st">&quot;Both subjects&quot;</span></span>
+<span id="cb135-13"><a href="c04-distributions.html#cb135-13" tabindex="-1"></a>  ))</span>
+<span id="cb135-14"><a href="c04-distributions.html#cb135-14" tabindex="-1"></a></span>
+<span id="cb135-15"><a href="c04-distributions.html#cb135-15" tabindex="-1"></a>mpl_long</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 4
+##   indicator     proportion lower upper
+##   &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Reading            0.378 0.366 0.389
+## 2 Mathematics        0.507 0.498 0.517
+## 3 Both subjects      0.344 0.333 0.355</code></pre>
+<p>The table now reads as a set of findings: 37.8% of children reach the reading threshold, 50.7% the mathematics threshold, and 34.4% both. Turning a table like this into publication-ready output is what packages such as {gt} and {gtsummary}, introduced in Chapter <a href="#c05-setting-up"><strong>??</strong></a>, are for.</p>
+<p><code>across()</code> does not work with <code>survey_prop()</code>, which takes its variable from <code>group_by()</code> rather than as an argument. When the same breakdown is needed for several categorical variables, write a small function and map over the variable names instead:</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="c04-distributions.html#cb137-1" tabindex="-1"></a>mpl_split_by <span class="ot">&lt;-</span> <span class="cf">function</span>(variable) {</span>
+<span id="cb137-2"><a href="c04-distributions.html#cb137-2" tabindex="-1"></a>  icanicar_des <span class="sc">|&gt;</span></span>
+<span id="cb137-3"><a href="c04-distributions.html#cb137-3" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(.data[[variable]]), <span class="sc">!</span><span class="fu">is.na</span>(MPLMath)) <span class="sc">|&gt;</span></span>
+<span id="cb137-4"><a href="c04-distributions.html#cb137-4" tabindex="-1"></a>    <span class="fu">group_by</span>(.data[[variable]]) <span class="sc">|&gt;</span></span>
+<span id="cb137-5"><a href="c04-distributions.html#cb137-5" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_mean</span>(MPLMath, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">&quot;ci&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb137-6"><a href="c04-distributions.html#cb137-6" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">category =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb137-7"><a href="c04-distributions.html#cb137-7" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">variable =</span> variable, <span class="at">category =</span> <span class="fu">as.character</span>(category)) <span class="sc">|&gt;</span></span>
+<span id="cb137-8"><a href="c04-distributions.html#cb137-8" tabindex="-1"></a>    <span class="fu">relocate</span>(variable)</span>
+<span id="cb137-9"><a href="c04-distributions.html#cb137-9" tabindex="-1"></a>}</span>
+<span id="cb137-10"><a href="c04-distributions.html#cb137-10" tabindex="-1"></a></span>
+<span id="cb137-11"><a href="c04-distributions.html#cb137-11" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;residence&quot;</span>, <span class="st">&quot;schooling&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb137-12"><a href="c04-distributions.html#cb137-12" tabindex="-1"></a>  <span class="fu">map</span>(mpl_split_by) <span class="sc">|&gt;</span></span>
+<span id="cb137-13"><a href="c04-distributions.html#cb137-13" tabindex="-1"></a>  <span class="fu">list_rbind</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 7 × 5
+##   variable  category                p  p_low p_upp
+##   &lt;chr&gt;     &lt;chr&gt;               &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 sex       Female             0.499  0.488  0.509
+## 2 sex       Male               0.515  0.503  0.528
+## 3 residence Rural              0.464  0.450  0.478
+## 4 residence Urban              0.561  0.545  0.576
+## 5 schooling Currently Enrolled 0.530  0.520  0.540
+## 6 schooling Out of School      0.335  0.295  0.375
+## 7 schooling Never Enrolled     0.0816 0.0597 0.103</code></pre>
+<p>The function is written once, the mapping extends to as many variables as needed, and <code>list_rbind()</code> stacks the pieces into a single tidy table. Because the grouping variable is supplied as a string, <code>.data[[variable]]</code> is used to look it up, and <code>rename(category = 1)</code> gives the first column a common name so the results can be stacked. This pattern scales to the dozens of background variables a full descriptive report usually needs.</p>
+</div>
+</div>
+<div id="exercises" class="section level2 hasAnchor" number="4.11">
+<h2><span class="header-section-number">4.11</span> Exercises<a href="c04-distributions.html#exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The exercises use <code>icanicar_des</code> from the Prerequisites box.</p>
+<ol style="list-style-type: decimal">
+<li>How many children in the population have never been enrolled in school? Report a 95% confidence interval. Hint: <code>schooling</code> distinguishes the three enrolment categories.</li>
+<li>What proportion of girls and of boys reach the minimum proficiency level in reading? Hint: group by <code>sex</code> and use <code>mpl_reading</code>, or take the mean of <code>MPLReading</code>.</li>
+<li>Estimate the median reading score for rural and urban children, with confidence intervals. Which group has the wider interval, and why might that be?</li>
+<li>Produce a table of the estimated number of children currently enrolled in each country, sorted from largest to smallest, with a summary row for all countries. Hint: <code>cascade()</code>.</li>
+<li>Estimate the design effect attached to the reading proficiency proportion, convert it into an effective sample size, and compare it with the design effect attached to the mean reading score. Which of the two loses more precision to clustering?</li>
+<li>Is the time spent on the numeracy assessment related to the time spent on the reading assessment? Estimate the correlation between <code>IcanAssessTime</code> and <code>IcarAssessTime</code>, then repeat it separately for children assessed in their home language and children who were not (<code>AssHomeLang</code>).</li>
+<li>Among children who are currently enrolled, estimate the proportion reaching the minimum proficiency level in mathematics for each single year of age from 7 to 12. Describe the pattern in two or three sentences. Hint: <code>filter()</code> the design first, then group by <code>ch02</code>.</li>
+<li>Compare the weighted and unweighted proportions of children living in urban areas. What does the difference tell you about how the sample was drawn?</li>
+</ol>
+</div>
+<div id="further-reading" class="section level2 hasAnchor" number="4.12">
+<h2><span class="header-section-number">4.12</span> Further reading<a href="c04-distributions.html#further-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The {srvyr} <a href="https://cran.r-project.org/package=srvyr">reference documentation</a> is the authoritative source on the functions used in this chapter, and each help page lists the {survey} function it calls. Zimmer, Powell, and Velásquez-Hernández’s <em>Exploring Complex Survey Data Analysis Using R</em> (<a href="https://tidy-survey-r.github.io/tidy-survey-book/">tidy-survey-r.github.io/tidy-survey-book</a>) works through the same estimators using United States survey data and goes further into replicate-weight designs. For the sampling design, weights, and questionnaire content behind the estimates above, see the PAL Network documentation collected in the <a href="https://www.datafirst.uct.ac.za/dataportal/index.php/catalog/1132">DataFirst metadata record</a> for ICAN-ICAR 2025.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="c03-setting-up.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="c05-modeling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/DataFirst-Courses/Introduction-To-R/edit/main/04-understanding-distributions.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": "https://github.com/DataFirst-Courses/Introduction-To-R/blob/main/04-understanding-distributions.Rmd",
+    "text": null
+  },
+  "download": ["bookdownproj.pdf", "bookdownproj.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  },
+  "toolbar": {
+    "position": "fixed"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

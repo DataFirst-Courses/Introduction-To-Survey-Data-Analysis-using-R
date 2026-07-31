@@ -1,8 +1,18 @@
 bookdown::gitbook:
+  download: ["pdf", "epub"]
   css: style.css
   config:
     toc:
       before: |
-        <li><a href="./">Analysis of Household Education Survey Data using R</a></li>
+        <li class="toc-logo"><a href="index.html"><img src="files/AFLEARN logo.png" alt="AFLEARN"></a></li>
+        <li class="home-link"><a href="index.html"><i class="fa fa-home"></i> Guide home</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+        
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex   # optional, for custom LaTeX
+  latex_engine: xelatex
+  keep_tex: false
+  
+bookdown::epub_book: default

@@ -117,3 +117,6 @@ The arguments are:
 -   `name`: the name of the count variable, defaults to `n`
 -   `.drop`: whether to drop empty groups
 -   `vartype`: type(s) of variation estimate to calculate including any of `c("se", "ci", "var", "cv")`, defaults to `se` (standard error) (see Section \@ref(desc-count-syntax) for more information)
+
+
+3

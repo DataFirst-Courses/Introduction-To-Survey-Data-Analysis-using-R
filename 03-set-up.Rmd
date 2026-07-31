@@ -1,5 +1,5 @@
 # (PART) Analysis {-}
-# Getting Started {#c05-setting-up}
+# Getting Started {#c03-setting-up}
 
 ```{r}
 #| label: setup-styler
