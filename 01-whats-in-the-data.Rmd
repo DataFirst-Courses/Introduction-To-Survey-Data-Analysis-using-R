@@ -1,5 +1,460 @@
-# Understanding ICAN-ICAR Data {#ch-whats-in-data}
+# What's in the data? {#ch-whats-in-data}
 
-This chapter will introduce the ICAN-ICAR survey design, sample, and dataset structure.
+```{css, echo=FALSE}
+.pasec-table-wrap {
+  overflow-x: auto;
+  margin: 1.25em 0;
+}
 
-**Coming soon.**
+.pasec-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92em;
+}
+
+.pasec-data-table td {
+  border: 1px solid #d0d0d0;
+  padding: 0.45em 0.65em;
+  vertical-align: top;
+}
+
+.pasec-data-table td[style*="background-color: #002060"]:not([style*="color:"]) {
+  color: #FFFFFF !important;
+}
+.pasec-data-table td[style*="background-color: #0F4761"]:not([style*="color:"]),
+.pasec-data-table td[style*="background-color: #156082"]:not([style*="color:"]),
+.pasec-data-table td[style*="background-color: #3A7C22"]:not([style*="color:"]),
+.pasec-data-table td[style*="background-color: #45B0E1"]:not([style*="color:"]),
+.pasec-data-table td[style*="background-color: #83CAEB"]:not([style*="color:"]) {
+  color: #FFFFFF !important;
+}
+
+
+/* GitBook zebra-striping targets all tables; keep cell colours from the docx */
+.book .book-body .page-wrapper .page-inner section.normal table.pasec-data-table tr,
+.book .book-body .page-wrapper .page-inner section.normal table.pasec-data-table tr:nth-child(2n) {
+  background-color: transparent !important;
+}
+```
+
+ICAN-ICAR is a household-based, cross-national assessment of children's foundational reading and numeracy. The 2025 cycle covers 11 countries assessed at national scale (Bangladesh, Kenya, Mali, Mexico, Mozambique, Nepal, Nicaragua, Pakistan, Senegal, Tanzania, Uganda), plus a school-based proof-of-concept pilot in Botswana. The target population is children aged 5 to 16 years, including those in and out of school. All children aged 5–16 residing in a sampled household are included in the learning assessment. Some eligible children are surveyed but not assessed, because of refusal, absence during the test, or severe disability.
+
+The household questionnaire, codebook, and related technical documentation are available in the [data repository](https://doi.org/10.25828/ah42-xw77) together with the dataset. The household questionnaire contains household questions and, for each child in the household, child modules and the ICAR and ICAN assessments. The codebook lists the harmonized variables described below.
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Sections of the datasets</td>
+  </tr>
+  <tr>
+    <td>Foundational learning focus</td>
+  </tr>
+  <tr>
+    <td>Reading assessment (ICAR)</td>
+  </tr>
+  <tr>
+    <td>Numeracy assessment (ICAN)</td>
+  </tr>
+  <tr>
+    <td>Proficiency scores</td>
+  </tr>
+  <tr>
+    <td>Household identifiers and roster</td>
+  </tr>
+  <tr>
+    <td>Household characteristics and asset ownership</td>
+  </tr>
+  <tr>
+    <td>Child-level modules</td>
+  </tr>
+  <tr>
+    <td>Community (village) information</td>
+  </tr>
+  <tr>
+    <td>Administrative and sampling/weight variables</td>
+  </tr>
+</table>
+</div>
+```
+
+Each of these sections is described in more detail below.
+
+## Foundational learning focus
+
+ICAN-ICAR provides data for SDG indicator 4.1.1(a): the proportion of children achieving at least a minimum proficiency level (MPL) in reading and mathematics at grades 2/3. Published analysis of this data, including the 2025 State of Foundational Learning report, presents MPL results for age 10 and for Grade 4.
+
+Child age is recorded in single years from 5 to 16 (`ch02`). For currently enrolled children, current grade is also recorded (`ch06a`).
+
+## Reading assessment (ICAR)
+
+ICAR is administered one-on-one, comprises 30 items, and is organised into three areas in a fixed sequence. Listening comprehension is administered first and independently of decoding ability, so that children who cannot yet read can still demonstrate comprehension. Administration then follows stop rules:
+
+- single-word reading (`l3`) and word-picture matching (`l4`) are administered only if at least three letter items (`l2`) are correct
+- the first reading-comprehension passage (`l5`) is administered only if at least three word items (`l3`) are correct
+- the second passage (`l6`) is administered only if at least one `l5` item is correct
+
+Two parallel booklets (Sample 1 / Sample 2) were designed with identical difficulty levels. The variable `sample` records which sample is used and is asked once when the child is available to start the assessment, immediately before the ICAR and ICAN sections.
+
+Item responses are coded on a three-point scale: no response/do not know, incorrect answer, or correct answer.
+
+### Areas assessed by ICAR in reading
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Areas assessed</td>
+    <td style="background-color: #002060; color: #FFFFFF">Items</td>
+    <td style="background-color: #002060; color: #FFFFFF">Variables in dataset</td>
+    <td style="background-color: #002060; color: #FFFFFF">Exercises and skills assessed</td>
+  </tr>
+  <tr>
+    <td>Oral language (listening) comprehension</td>
+    <td>4</td>
+    <td><code>l1.1</code>&ndash;<code>l1.4</code></td>
+    <td>The child listens to a short story read aloud and answers questions about it.</td>
+  </tr>
+  <tr>
+    <td>Decoding</td>
+    <td>10</td>
+    <td><code>l2.1</code>&ndash;<code>l2.5</code>, <code>l3.1</code>&ndash;<code>l3.5</code></td>
+    <td>Letter identification and single-word reading, assessing oral reading accuracy.</td>
+  </tr>
+  <tr>
+    <td>Reading comprehension</td>
+    <td>16</td>
+    <td><code>l4.1</code>&ndash;<code>l4.6</code>, <code>l5.1</code>&ndash;<code>l5.5</code>, <code>l6.1</code>&ndash;<code>l6.5</code></td>
+    <td>Word-picture matching and oral reading of short passages followed by comprehension questions.</td>
+  </tr>
+</table>
+</div>
+```
+
+The reading MPL cut-point corresponds to recognising common Grade-2-level words and retrieving a single explicit piece of information from a short passage of approximately 40 words.
+
+## Numeracy assessment (ICAN)
+
+ICAN comprises 36 items across five content domains. Items are organised in three sets: Set 1 (`n1`–`n26`), Set 2 (`n27`–`n30`: easy addition, subtraction, multiplication, and division), and Set 3 (`n31`–`n36`: difficult addition, subtraction, multiplication, and division, plus word-problem subtraction and division). Sets 1 and 2 are administered to every child regardless of age or schooling status. Set 3 items are administered only when the corresponding Set 2 item is correct (for example, difficult addition only if easy addition was correct). The codebook does not itemize which of `n1`–`n26` belong to each content domain.
+
+Item responses use the same three-point coding as ICAR.
+
+### Areas assessed by ICAN in mathematics
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Areas assessed</td>
+    <td style="background-color: #002060; color: #FFFFFF">Items</td>
+    <td style="background-color: #002060; color: #FFFFFF">Exercises and skills assessed</td>
+  </tr>
+  <tr>
+    <td>Number and operations</td>
+    <td>23</td>
+    <td>Counting, comparing, and solving basic operations (addition, subtraction, multiplication, division), in numerical and word-problem form.</td>
+  </tr>
+  <tr>
+    <td>Measurement</td>
+    <td>6</td>
+    <td>Size, length, and related measurement concepts.</td>
+  </tr>
+  <tr>
+    <td>Shape (geometry)</td>
+    <td>3</td>
+    <td>Recognising and working with geometric shapes.</td>
+  </tr>
+  <tr>
+    <td>Pattern (algebra)</td>
+    <td>2</td>
+    <td>Identifying and extending simple patterns.</td>
+  </tr>
+  <tr>
+    <td>Data display (statistics)</td>
+    <td>2</td>
+    <td>Reading and interpreting simple data displays.</td>
+  </tr>
+</table>
+</div>
+```
+
+The codebook lists item variables `n1`–`n36`. The mathematics MPL cut-point corresponds to the ability to count, compare, and order whole numbers up to 100; solve basic addition and subtraction problems within 20; and handle simple multiplicative operations such as doubling a small quantity or dividing a small group into two equal sets.
+
+## Proficiency scores
+
+ICAN-ICAR uses Item Response Theory (IRT) to estimate proficiency in reading and mathematics. For each assessed child, the dataset provides a single EAP (Expected A Posteriori) score per domain, each with a paired standard error.
+
+Those continuous scores are also used to report whether children have reached the global Minimum Proficiency Levels (MPLs) that underpin SDG indicator 4.1.1(a). Binary MPL flags indicate whether the child meets the minimum proficiency standard in math, reading, or both. The cut-points on the IRT scale were established using the Pairwise Comparison Method (PCM). In August 2025, PAL Network and ACER-UK convened approximately 40 international literacy and numeracy experts to apply this method to the ICAN-ICAR item pool.
+
+| Domain | MPL indicator | IRT cut score (PCM) |
+|------------|------------|----------------|
+| Mathematics | `MPLMath` | $-0.246$ |
+| Reading | `MPLReading` | $0.394$ |
+| Both | `MPLBoth` | Meets both cut scores |
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Variable</td>
+    <td style="background-color: #002060; color: #FFFFFF">Description</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>MathIRTScore</code></td>
+    <td style="background-color: #F2F2F2">EAP proficiency score in mathematics</td>
+  </tr>
+  <tr>
+    <td><code>ReadingIRTScore</code></td>
+    <td>EAP proficiency score in reading</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>StandardErrorMath</code></td>
+    <td style="background-color: #F2F2F2">Standard error of the mathematics EAP score</td>
+  </tr>
+  <tr>
+    <td><code>StandardErrorReading</code></td>
+    <td>Standard error of the reading EAP score</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>MPLMath</code></td>
+    <td style="background-color: #F2F2F2">Binary indicator: meets mathematics MPL</td>
+  </tr>
+  <tr>
+    <td><code>MPLReading</code></td>
+    <td>Binary indicator: meets reading MPL</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>MPLBoth</code></td>
+    <td style="background-color: #F2F2F2">Binary indicator: meets both reading and mathematics MPLs</td>
+  </tr>
+  <tr>
+    <td><code>EnrolmentStatus</code></td>
+    <td>Whether the child is enrolled</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>AssessementLanguage</code></td>
+    <td style="background-color: #F2F2F2">Language the child was assessed in</td>
+  </tr>
+  <tr>
+    <td><code>AssHomeLang</code></td>
+    <td>Whether assessment language matches home language</td>
+  </tr>
+</table>
+</div>
+```
+
+## Household identifiers and roster
+
+Each record carries a hierarchy of identifiers: country (`CountryName`), sub-national geographic division (`TierOneUnit`; labelled county, state, or province depending on the country), village identifier (`VillageID`), rural/urban location (`Location`), and a unique household identifier (`HHID`). Every child within a household receives a unique child identifier (`ChildID`).
+
+The household questionnaire records whether the household has children aged 5–16 living there regularly, and a household status flag (`hh_status`: locked / not responding / open to survey). Respondent information (name of respondent, name of household head, household telephone number) and household size are recorded, followed by language use at home relative to the language of assessment. Home-language wording differs for Mali and Senegal (`hh06b2`) from the other countries (`hh06b1`).
+
+## Household characteristics and asset ownership
+
+This module collects household socio-economic information at the household level. The codebook also includes a motorised three-wheeler item (`hh07p_3`), present only in the Bangladesh and Kenya data. This item does not appear in the household questionnaire. The codebook does not include a pre-constructed derived asset index; the raw component items are supplied without a combined index.
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Questionnaire</td>
+    <td style="background-color: #002060; color: #FFFFFF">Theme</td>
+    <td style="background-color: #002060; color: #FFFFFF">Variables</td>
+  </tr>
+  <tr>
+    <td rowspan="12" style="background-color: #BDD7EE; vertical-align: middle">Household questionnaire</td>
+    <td rowspan="4" style="background-color: #C6E0B4; vertical-align: middle">Dwelling characteristics</td>
+    <td style="background-color: #F2F2F2">Roofing material</td>
+  </tr>
+  <tr>
+    <td>Wall material</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Source of lighting</td>
+  </tr>
+  <tr>
+    <td>Source of drinking water</td>
+  </tr>
+  <tr>
+    <td rowspan="2" style="background-color: #C6E0B4; vertical-align: middle">Utilities and sanitation</td>
+    <td style="background-color: #F2F2F2">Electricity connection</td>
+  </tr>
+  <tr>
+    <td>Toilet / latrine</td>
+  </tr>
+  <tr>
+    <td style="background-color: #C6E0B4; vertical-align: middle">Household education</td>
+    <td style="background-color: #F2F2F2">At least one household member other than the child&rsquo;s parents has completed Form 4</td>
+  </tr>
+  <tr>
+    <td rowspan="5" style="background-color: #C6E0B4; vertical-align: middle">Learning materials and assets</td>
+    <td>Children&rsquo;s books or reading material; other reading material (e.g. religious texts, newspapers)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Computer / laptop / tablet; television; radio</td>
+  </tr>
+  <tr>
+    <td>Mobile phone (and whether it is a smartphone)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Motorised four-wheeler; motorised two-wheeler; bicycle</td>
+  </tr>
+  <tr>
+    <td>Motorised three-wheeler (<code>hh07p_3</code>; Bangladesh and Kenya only)</td>
+  </tr>
+</table>
+</div>
+```
+
+## Child-level modules
+
+For each child in the household, the questionnaire collects demographics, disability screening, schooling status, home literacy and learning support, and parental information.
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Questionnaire</td>
+    <td style="background-color: #002060; color: #FFFFFF">Theme</td>
+    <td style="background-color: #002060; color: #FFFFFF">Variables</td>
+  </tr>
+  <tr>
+    <td rowspan="16" style="background-color: #BDD7EE; vertical-align: middle">Child modules</td>
+    <td rowspan="2" style="background-color: #C6E0B4; vertical-align: middle">Demographics</td>
+    <td style="background-color: #F2F2F2">Age in single years, 5&ndash;16 (<code>ch02</code>)</td>
+  </tr>
+  <tr>
+    <td>Sex (<code>ch03</code>)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #C6E0B4; vertical-align: middle">Disability screening</td>
+    <td style="background-color: #F2F2F2">Washington Group Short Set on Functioning: seeing, hearing, walking, self-care, communicating, remembering (<code>ch04a</code>&ndash;<code>ch04f</code>)</td>
+  </tr>
+  <tr>
+    <td rowspan="5" style="background-color: #C6E0B4; vertical-align: middle">Schooling status</td>
+    <td>Current enrolment; if enrolled: current grade (<code>ch06a</code>), school type, medium of instruction match, textbooks, grade repetition</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">If never enrolled, or previously enrolled but not currently: year of dropout, last grade completed</td>
+  </tr>
+  <tr>
+    <td>Reason for dropout (fees, school closed, not promoted, no nearby school, not interested, other, don&rsquo;t know)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Enrolment status derived flag (<code>EnrolmentStatus</code>)</td>
+  </tr>
+  <tr>
+    <td>Assessment language and home-language match (<code>AssessementLanguage</code>, <code>AssHomeLang</code>)</td>
+  </tr>
+  <tr>
+    <td rowspan="3" style="background-color: #C6E0B4; vertical-align: middle">Home literacy and learning support</td>
+    <td style="background-color: #F2F2F2">Paid tuition / coaching</td>
+  </tr>
+  <tr>
+    <td>Non-textbook reading material brought home (<code>ch09</code>)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Homework assistance and who provides it; frequency of story-reading or storytelling</td>
+  </tr>
+  <tr>
+    <td rowspan="4" style="background-color: #C6E0B4; vertical-align: middle">Parental information</td>
+    <td>Who the child lives with (mother, father, both, or neither)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Mother&rsquo;s age, school attendance history, highest level completed</td>
+  </tr>
+  <tr>
+    <td>Father&rsquo;s age, school attendance history, highest level completed</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Mother&rsquo;s and father&rsquo;s income-generating work status and type</td>
+  </tr>
+</table>
+</div>
+```
+
+## Community (village) information
+
+A Village Information Form (VIF) is completed by surveyors on the basis of observation and local inquiry. It covers community infrastructure and services.
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Questionnaire</td>
+    <td style="background-color: #002060; color: #FFFFFF">Theme</td>
+    <td style="background-color: #002060; color: #FFFFFF">Variables</td>
+  </tr>
+  <tr>
+    <td rowspan="5" style="background-color: #BDD7EE; vertical-align: middle">Village Information Form</td>
+    <td rowspan="5" style="background-color: #C6E0B4; vertical-align: middle">Community infrastructure and services</td>
+    <td style="background-color: #F2F2F2">Road access (<code>v01</code>)</td>
+  </tr>
+  <tr>
+    <td>Transport (<code>v02</code>)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Electricity (<code>v03</code>)</td>
+  </tr>
+  <tr>
+    <td>Health clinic availability (<code>v04</code>)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2">Pre-primary school availability and type (<code>v05</code>&ndash;<code>v06b</code>)</td>
+  </tr>
+</table>
+</div>
+```
+
+## Administrative variables
+
+```{=html}
+<div class="pasec-table-wrap">
+<table class="pasec-data-table">
+  <tr>
+    <td style="background-color: #002060; color: #FFFFFF">Variable</td>
+    <td style="background-color: #002060; color: #FFFFFF">Description</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>CountryName</code></td>
+    <td style="background-color: #F2F2F2">Country name</td>
+  </tr>
+  <tr>
+    <td><code>TierOneUnit</code></td>
+    <td>Sub-national geographic division (county / state / province; label varies by country)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>VillageID</code></td>
+    <td style="background-color: #F2F2F2">Village identifier (primary sampling unit within country)</td>
+  </tr>
+  <tr>
+    <td><code>Location</code></td>
+    <td>Rural / urban location</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>HHID</code></td>
+    <td style="background-color: #F2F2F2">Unique household identifier</td>
+  </tr>
+  <tr>
+    <td><code>ChildID</code></td>
+    <td>Unique child identifier within the household</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>HHWeightProvided</code></td>
+    <td style="background-color: #F2F2F2">Final household-level sampling weight</td>
+  </tr>
+  <tr>
+    <td><code>sample</code></td>
+    <td>Assessment booklet sample (Sample 1 / Sample 2)</td>
+  </tr>
+  <tr>
+    <td style="background-color: #F2F2F2"><code>hh_status</code></td>
+    <td style="background-color: #F2F2F2">Household status (locked / not responding / open to survey)</td>
+  </tr>
+</table>
+</div>
+```
+
+The primary weight used for household- and child-level analyses is the **final household weight (`HHWeightProvided`)**. This weight incorporates selection probabilities and adjustments for non-response (and related post-stratification where applied). It represents how many population households each sampled household stands for and should be used in design-based analyses.
+
+ICAN-ICAR uses a stratified, multi-stage cluster design. Standard errors should account for stratification (`TierOneUnit` within country) and clustering (`VillageID` and household nesting). [Learn more about constructing the survey design object in R](c03-setting-up.html).
